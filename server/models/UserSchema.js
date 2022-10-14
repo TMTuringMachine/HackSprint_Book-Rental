@@ -20,51 +20,56 @@ const userSchema = new mongoose.Schema({
   },
   isAdmin: {
     type: Boolean,
-    default:false
+    default: false,
   },
   isDeliveryBoy: {
     type: Boolean,
-    default:false,
+    default: false,
   },
-  Addresses:[
+  Addresses: [
     {
-        address:{
-            type:String
-        },
-        city:{
-            type:String
-        },
-        state:{
-            type:String
-        },
-        pincode:{
-            type:Number
-        }
-    }
+      address: {
+        type: String,
+      },
+      city: {
+        type: String,
+      },
+      state: {
+        type: String,
+      },
+      pincode: {
+        type: Number,
+      },
+    },
   ],
-  rentals:[
+  rentals: [
     {
-        isActive:{
-            type:Boolean,
-            default:true
-        },
-        order:{
-            type: Schema.Types.ObjectId,
-            ref: "ORDER",
-        }, 
-    }
+      isActive: {
+        type: Boolean,
+        default: true,
+      },
+      order: {
+        type: Schema.Types.ObjectId,
+        ref: "ORDER",
+      },
+    },
   ],
-  recommend:[
+  recommend: [
     {
-        type:String,
-    }
+      type: String,
+    },
   ],
-  cart:[
-    {
+  cart: {
+    items: [
+      {
         type: Schema.Types.ObjectId,
         ref: "BOOK",
-    }, 
-  ]
+      },
+    ],
+    total: {
+      type: Number,
+    },
+  },
 });
 
 const User = mongoose.model("USER", userSchema);

@@ -69,7 +69,7 @@ export default function Router() {
       //   element: <CSVParser/>
       // }
       path: '/test',
-      element: <CSVParser />,
+      element: <RazorpayComponent />,
     },
   ]);
 }

@@ -1,9 +1,22 @@
 import { Grid, Rating, TextField } from "@mui/material";
-import React from "react";
+import React,{useState,useEffect} from "react";
 import BookOverview from "../../components/BookOverview/BookOverview.component";
 import CustomButton from "../../components/CustomButton/CustomButton.component";
+import useQuery from "../../hooks/useQuery";
 
 const Home = () => {
+  const [books, setBooks] = useState([]);
+  const { isLoading, response,fetchData } = useQuery({
+    url: "/books/getAll",
+    showSnack: false,
+    onSuccess: (data) => {
+      setBooks(data.books);
+      console.log(data.books);
+    },
+  });
+  useEffect(()=>{
+    fetchData();
+  },[])
   return (
     <div className="w-full h-full flex flex-col overflow-y-auto">
       <div className="section1 w-full h-56 flex gap-8 p-3">
@@ -32,13 +45,15 @@ const Home = () => {
           <div className="text-2xl text-primary font-semibold mb-3">
             Books we recommended for you!
           </div>
-          <Grid container spacing={2}>
-            {[...Array(6)].map((i) => (
-              <Grid item md={2}>
-                <BookOverview />
-              </Grid>
-            ))}
-          </Grid>
+          {!isLoading ? (
+            <Grid container spacing={2}>
+              {books.slice(0).reverse().slice(0,12).map((book,idx) => (
+                <Grid item md={2}>
+                  <BookOverview book={book} key={idx}/>
+                </Grid>
+              ))}
+            </Grid>
+          ) : null}
         </div>
         <div className="w-full h-fit flex gap-4">
           <div className="w-3/5 rounded-lg shadow-shadow1 p-3 flex flex-col">
