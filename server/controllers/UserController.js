@@ -65,7 +65,7 @@ const jwtVerify = async (req, res) => {
   const token = req.headers.authorization;
   console.log(`token: ${token}`);
   if (!token) {
-    return res.send({ message: 'Invalid Token' });
+    return res.status(400).send({ message: 'Invalid Token' });
   }
 
   const decodeToken = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
@@ -74,7 +74,7 @@ const jwtVerify = async (req, res) => {
     //   .populate("rentals")
     return res.send({ message: 'User Validated', user });
   }
-  res.send({ message: 'Invalid Token' });
+  res.status(400).send({ message: 'Invalid Token' });
 };
 
 module.exports = {
