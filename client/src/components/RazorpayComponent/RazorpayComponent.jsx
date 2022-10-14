@@ -11,7 +11,7 @@ const RazorpayComponent = () => {
             "name": "Acme Corp",
             "description": "Test Transaction",
             "image": "https://example.com/your_logo",
-            "order_id": "order_KThGDkDxdfZS7p", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "order_id": "order_KTkko8LMdSBFcS", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             "callback_url": "http://localhost:5000/order/pay",
             "prefill": {
                 "name": "Gaurav Kumar",
