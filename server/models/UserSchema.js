@@ -68,6 +68,7 @@ const userSchema = new mongoose.Schema({
     ],
     total: {
       type: Number,
+      default:0
     },
   },
 });
