@@ -6,20 +6,18 @@ import {
   IconButton,
   useTheme,
 } from '@mui/material';
-import Modal from '@mui/material/Modal';
 import React, { useState, useEffect } from 'react';
 import { MainPage } from '../../globals/styles';
 import { Icon } from '@iconify/react';
 import * as S from './adminDashboard.styles';
 import palette from '../../theme/palette';
 import { DataGrid } from '@mui/x-data-grid';
-import CountUp from 'react-countup';
-import CSVModal from '../../components/CSVParser/CSVModal.component';
+import { useSnackbar } from 'notistack';
+import AddBookModal from '../../components/AddBookModal/AddBookModal.component';
 
+import CountUp from 'react-countup';
 const AdminDashboard = () => {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [showAddBookModal, setShowAddBookModal] = useState(false);
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'name', headerName: 'User Name', width: 200 },
@@ -71,6 +69,10 @@ const AdminDashboard = () => {
     },
   ];
   const { breakpoints } = useTheme();
+
+  const toggleAddBookModal = () => {
+    setShowAddBookModal(!showAddBookModal);
+  };
 
   return (
     <MainPage>
@@ -187,7 +189,7 @@ const AdminDashboard = () => {
                   height="35px"
                   color={palette.primary}
                 />
-                <Box sx={{ width: '70%' }}>
+                <Box sx={{ width: '70%' }} onClick={toggleAddBookModal}>
                   <Typography sx={{ fontSize: '0.9em', fontWeight: 600 }}>
                     ADD A BOOK
                   </Typography>
@@ -199,6 +201,11 @@ const AdminDashboard = () => {
                   </Typography>
                 </Box>
               </S.ActionBarItem>
+
+              <AddBookModal
+                state={showAddBookModal}
+                toggleModal={toggleAddBookModal}
+              />
               <S.ActionBarItem onClick={(e) => handleOpen()}>
                 <Icon
                   icon="fluent:people-team-16-filled"
