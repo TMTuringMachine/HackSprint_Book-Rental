@@ -59,12 +59,16 @@ const userSchema = new mongoose.Schema({
         type:String,
     }
   ],
-  cart:[
+  cart:{items:[
     {
         type: Schema.Types.ObjectId,
         ref: "BOOK",
     }, 
-  ]
+  ],
+  total:{
+    type:Number
+  }
+}
 });
 
 const User = mongoose.model("USER", userSchema);

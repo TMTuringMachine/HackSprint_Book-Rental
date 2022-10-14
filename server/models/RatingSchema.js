@@ -17,3 +17,7 @@ const RatingSchema =new mongoose.Schema({
         }
     }
 })
+
+const Rating = mongoose.model("RATINGS",RatingSchema)
+
+module.exports=Rating

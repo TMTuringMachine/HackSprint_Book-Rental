@@ -5,7 +5,8 @@ const {
     payment,
     addToCart,
     removeFromCart,
-    getCart
+    getCart,
+    checkout
 } = require("../controllers/OrderController");
 
 const { isLoggedIn } = require("../middlewares/isLoggedIn");
@@ -15,6 +16,7 @@ router.post("/pay",payment)
 router.post('/addToCart',isLoggedIn,addToCart)
 router.post('/removeFromCart',isLoggedIn,removeFromCart)
 router.get('/viewCart',isLoggedIn,getCart)
+router.post('/checkout',isLoggedIn,checkout)
 
 
 
