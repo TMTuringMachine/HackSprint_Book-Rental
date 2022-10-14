@@ -11,6 +11,7 @@ const addBooksFromCSV = async (req, res) => {
       author: book[2],
       rentPrice: book[3],
       stock: 1,
+      numratings: 0,
     });
 
     const bookAdded = newBook.save();

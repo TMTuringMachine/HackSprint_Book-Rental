@@ -6,15 +6,20 @@ import {
   IconButton,
   useTheme,
 } from '@mui/material';
+import Modal from '@mui/material/Modal';
 import React, { useState, useEffect } from 'react';
 import { MainPage } from '../../globals/styles';
 import { Icon } from '@iconify/react';
 import * as S from './adminDashboard.styles';
 import palette from '../../theme/palette';
 import { DataGrid } from '@mui/x-data-grid';
-import { useSnackbar } from 'notistack';
 import CountUp from 'react-countup';
+import CSVModal from '../../components/CSVParser/CSVModal.component';
+
 const AdminDashboard = () => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'name', headerName: 'User Name', width: 200 },
@@ -69,6 +74,12 @@ const AdminDashboard = () => {
 
   return (
     <MainPage>
+      <CSVModal
+        open={open}
+        setOpen={setOpen}
+        handleClose={handleClose}
+        handleOpen={handleOpen}
+      />
       <S.DashboardContainer>
         <Typography
           sx={{
@@ -188,7 +199,7 @@ const AdminDashboard = () => {
                   </Typography>
                 </Box>
               </S.ActionBarItem>
-              <S.ActionBarItem onClick={() => {}}>
+              <S.ActionBarItem onClick={(e) => handleOpen()}>
                 <Icon
                   icon="fluent:people-team-16-filled"
                   width="35px"
