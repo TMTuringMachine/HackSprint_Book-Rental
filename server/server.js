@@ -8,8 +8,10 @@ app.use(cors());
 //using middleware to parse json data
 app.use(express.json());
 
-require('./db/conn');
-app.use('/', require('./routes/userRoutes'));
+require("./db/conn");
+app.use("/", require("./routes/userRoutes"));
+app.use("/order", require("./routes/orderRoutes"));
+
 
 app.listen(port, () => {
   console.log(`App listening on port http://localhost:${port}`);
