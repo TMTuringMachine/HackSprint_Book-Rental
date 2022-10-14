@@ -104,11 +104,12 @@ const getCart = async (req, res) => {
 const checkout = async (req, res) => {
     const user = req.user
     let address11;
+    var books;
     if (user) {
       console.log("okay user is verified");
       let cart = user.cart.items;
       console.log(cart,"CART")
-      let books = cart?.map((e) => e);
+      books = cart?.map((e) => e);
       console.log("books here", books);
       var totalPrice = cart.total;
       var { address, city, state, pincode } = req.body;
