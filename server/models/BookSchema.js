@@ -28,7 +28,8 @@ const bookSchema = new mongoose.Schema({
   },
   numratings:{
     type:Number,
-    required:true
+    required:true,
+    default:1
   },
   stock:{
     type:Number

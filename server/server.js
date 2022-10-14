@@ -15,10 +15,7 @@ app.use("/", require("./routes/userRoutes"));
 app.use("/order", require("./routes/orderRoutes"));
 app.use("/books", require("./routes/bookRoutes"));
 
-<<<<<<< HEAD
-=======
-app.use('/cart/', require('./routes/cartcheckoutRoutes'));
->>>>>>> ecf5eaf3194e24273300b99c0b6ba67a3ec99f6d
+// app.use('/cart/', require('./routes/cartcheckoutRoutes'));
 
 app.listen(process.env.PORT || 5001, () => {
   console.log(`App listening on port http://localhost:${port}`);
