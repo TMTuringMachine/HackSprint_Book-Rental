@@ -3,6 +3,7 @@ import { Navigate, useRoutes } from "react-router-dom";
 
 import { CircularProgress } from "@mui/material";
 import CSVParser from "../components/CSVParser/CSVParser";
+import RazorpayComponent from "../components/RazorpayComponent/RazorpayComponent";
 
 const Loadable = (Component) => (props) => {
   return (
@@ -52,10 +53,10 @@ export default function Router() {
         },
       ],
     },
-    // {
-    //   path:'/test',
-    //   element: <CSVParser/>
-    // }
+    {
+      path:'/test',
+      element: <RazorpayComponent/>
+    }
   ]);
 }
 
