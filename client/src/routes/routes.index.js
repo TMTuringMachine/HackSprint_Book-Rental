@@ -1,9 +1,9 @@
-import { Suspense, lazy } from 'react';
-import { Navigate, useRoutes } from 'react-router-dom';
+import { Suspense, lazy } from "react";
+import { Navigate, useRoutes } from "react-router-dom";
 
-import { CircularProgress } from '@mui/material';
-import CSVParser from '../components/CSVParser/CSVParser';
-import RazorpayComponent from '../components/RazorpayComponent/RazorpayComponent';
+import { CircularProgress } from "@mui/material";
+import CSVParser from "../components/CSVParser/CSVParser";
+import RazorpayComponent from "../components/RazorpayComponent/RazorpayComponent";
 
 const Loadable = (Component) => (props) => {
   return (
@@ -14,9 +14,9 @@ const Loadable = (Component) => (props) => {
             ...{
               width: 1,
               zIndex: 9999,
-              position: 'fixed',
-              top: '50vh',
-              left: '50vw',
+              position: "fixed",
+              top: "50vh",
+              left: "50vw",
             },
           }}
         />
@@ -30,35 +30,47 @@ const Loadable = (Component) => (props) => {
 export default function Router() {
   return useRoutes([
     {
-      path: '/',
+      path: "/",
       element: <Landing />,
     },
     {
-      path: '/user',
+      path: "/user",
       element: <MainLayout />,
       children: [
         {
-          path: 'home',
+          path: "home",
           element: <Home />,
+        },
+        {
+          path: "cart",
+          element: <UserCart />,
+        },
+        {
+          path: "checkout",
+          element: <UserCheckout />,
+        },
+        {
+          path: "orderSummary/:id",
+          element: <UserOrderSummary />,
         },
       ],
     },
     {
-      path: '/admin',
+      path: "/admin",
       element: <MainLayout />,
       children: [
         {
-          path: 'dashboard',
+          path: "dashboard",
           element: <AdminDashboard />,
         },
       ],
     },
     {
-      path: '/delivery',
+      path: "/delivery",
       element: <MainLayout />,
       children: [
         {
-          path: 'dashboard',
+          path: "dashboard",
           element: <DeliveryDashboard />,
         },
       ],
@@ -68,7 +80,7 @@ export default function Router() {
       //   path:'/test',
       //   element: <CSVParser/>
       // }
-      path: '/test',
+      path: "/test",
       element: <RazorpayComponent />,
     },
   ]);
@@ -76,21 +88,33 @@ export default function Router() {
 
 //layouts
 const MainLayout = Loadable(
-  lazy(() => import('../layouts/mainLayout/mainLayout.component'))
+  lazy(() => import("../layouts/mainLayout/mainLayout.component"))
 );
 
 const Landing = Loadable(
-  lazy(() => import('../pages/landing/landing.component'))
+  lazy(() => import("../pages/landing/landing.component"))
 );
 
 const Home = Loadable(
-  lazy(() => import('../pages/userHomepage/userHomepage.component'))
+  lazy(() => import("../pages/userHomepage/userHomepage.component"))
+);
+
+const UserCart = Loadable(
+  lazy(() => import("../pages/userCart/userCart.component"))
+);
+
+const UserCheckout = Loadable(
+  lazy(() => import("../pages/userCheckout/userCheckout.component"))
+);
+
+const UserOrderSummary = Loadable(
+  lazy(() => import("../pages/userOrderSummary/userOrderSummary.component"))
 );
 
 //admin routes
 const AdminDashboard = Loadable(
-  lazy(() => import('../pages/adminDashboard/adminDashboard.component'))
+  lazy(() => import("../pages/adminDashboard/adminDashboard.component"))
 );
 const DeliveryDashboard = Loadable(
-  lazy(() => import('../pages/deliveryDashboard/deliveryDashboard.component'))
+  lazy(() => import("../pages/deliveryDashboard/deliveryDashboard.component"))
 );

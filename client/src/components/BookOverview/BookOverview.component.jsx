@@ -5,6 +5,16 @@ import { Icon } from "@iconify/react";
 import useMutation from "../../hooks/useMutation";
 import { addToCartSuccess } from "../../redux/slices/auth.js";
 import { useDispatch } from "react-redux";
+import { styled } from "@mui/material";
+
+const BookImage = styled("div")(({ url }) => ({
+  width: "100%",
+  height: "65%",
+  backgroundImage: `url('${url}')`,
+  backgroundPosition: "center",
+  backgroundSize: "cover",
+  borderRadius:'10px'
+}));
 
 const BookOverview = ({ book }) => {
   const dispatch = useDispatch();
@@ -17,14 +27,20 @@ const BookOverview = ({ book }) => {
   });
 
   return (
-    <div className="w-full h-full hover:shadow-shadow1 rounded-lg p-1 flex flex-col hover:scale-105 transition-all duration-100 ease-in">
-      <img
+    <div className="w-full min-h-72 max-h-72 h-72 hover:shadow-shadow1 rounded-lg p-1 flex flex-col hover:scale-105 transition-all duration-100 ease-in">
+      {/* <img
         src={
           book?.image ||
           "https://images.unsplash.com/photo-1633477189729-9290b3261d0a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1922&q=80"
         }
-        className="w-full h-4/5 bg-cover bg-center rounded-lg"
+        className="w-full h-56 max-h-56 bg-cover bg-center rounded-lg"
         alt=""
+      /> */}
+      <BookImage
+        url={
+          book?.image ||
+          "https://images.unsplash.com/photo-1633477189729-9290b3261d0a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1922&q=80"
+        }
       />
       <div className="flex-1 flex flex-col p-1 items-start gap-1">
         <div className="text-md font-medium">{book?.name}</div>
