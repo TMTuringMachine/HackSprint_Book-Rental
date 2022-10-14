@@ -119,37 +119,66 @@ const getCart = async (req, res) => {
 };
 
 const checkout = async (req, res) => {
-  const user = req.user;
-  let address11;
-  if (user) {
-    console.log("okay user is verified");
-    let cart = user.cart.items;
-    console.log(cart,"cart here");
-    let books = cart?.map((e) => e.id);
-    console.log("books here", books);
-    var totalPrice = cart.total;
-    var { address, city, state, pincode } = req.body;
-    // let addressobj=await user.Addresses
-    console.log("ADRESSsf ", user.Addresses);
-    let address1 = user.Addresses.filter(
-      (e) =>
-        e.address == address &&
-        e.city == city &&
-        e.state == state &&
-        e.pincode == pincode
-    );
-    console.log("now", address);
-    if (address1.length !== 0) {
-      console.log("is there");
-      address11 = { address, city, state, pincode };
-    } else {
-      console.log("else here");
-      let prev = user.Addresses;
-      prev.push({ address, city, state, pincode });
-      address11 = { address, city, state, pincode };
-      const userupdate = await User.findByIdAndUpdate(user.id, {
-        Addresses: prev,
-      });
+    const user = req.user
+    let address11;
+    if (user) {
+      console.log("okay user is verified");
+      let cart = user.cart.items;
+      console.log(cart,"CART")
+      let books = cart?.map((e) => e);
+      console.log("books here", books);
+      var totalPrice = cart.total;
+      var { address, city, state, pincode } = req.body;
+      // let addressobj=await user.Addresses
+      console.log("ADRESSsf ", user.Addresses);
+      let address1 = user.Addresses.filter(
+        (e) =>
+          e.address == address &&
+          e.city == city &&
+          e.state == state &&
+          e.pincode == pincode
+      );
+      console.log("now", address);
+      if (address1.length !== 0) {
+        console.log("is there");
+        address11 = { address, city, state, pincode };
+      } else {
+        console.log("else here");
+        let prev = user.Addresses;
+        prev.push({ address, city, state, pincode });
+        address11 = { address, city, state, pincode };
+        const userupdate = await User.findByIdAndUpdate(user.id, {
+          Addresses: prev,
+        });
+      }
+      try {
+        console.log(address11);
+
+        const order = new Order({
+          books,
+          totalPrice,
+          Address: address11,
+          isOutForDelivery: false,
+          isDelivered: false,
+          isReturned: false,
+        });
+        const ordersaved = await order.save();
+        if (ordersaved) {
+          let currrentals = user.rentals;
+          currrentals.push({ isActive: true, order: ordersaved })
+          console.log("HERE",user)
+          const usr = await User.findByIdAndUpdate(user.id,{ rentals:currrentals,cart:{
+            items:[],
+            total:0
+          }})
+
+        if(usr) res.status(200).send({ message: "order checked out" ,orderID:ordersaved._id });
+        }
+      } catch (error) {
+        res.status(403).send({ message: "error occured" });
+
+        console.log("Error occured",error);
+      }
     }
     try {
       console.log(address11);

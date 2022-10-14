@@ -10,11 +10,12 @@ app.use(cors());
 app.use(express.json());
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({extended:true}))
-require("./db/conn");
-app.use("/", require("./routes/userRoutes"));
-app.use("/order", require("./routes/orderRoutes"));
-app.use("/books", require("./routes/bookRoutes"));
+app.use(express.urlencoded({ extended: true }));
 
+require('./db/conn');
+app.use('/', require('./routes/userRoutes'));
+app.use('/order', require('./routes/orderRoutes'));
+app.use('/books', require('./routes/bookRoutes'));
 
 app.listen(process.env.PORT || 5001, () => {
   console.log(`App listening on port http://localhost:${port}`);

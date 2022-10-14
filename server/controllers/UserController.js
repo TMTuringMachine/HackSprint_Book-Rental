@@ -1,7 +1,7 @@
-const bcrypt = require("bcrypt");
-var jwt = require("jsonwebtoken");
-const User = require("../models/UserSchema");
-
+const bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
+const User = require('../models/UserSchema');
+const axios = require('axios');
 const signup = async (req, res) => {
   var { name, email, phone, password, cpassword } = req.body;
   if (!name || !email || !password || !cpassword || !phone)
@@ -33,7 +33,7 @@ const login = async (req, res) => {
         .status(400)
         .send({ message: "Email or password cannot be blank" });
     }
-    const userLogin = await User.findOne({ email: email }).populate("cart");
+    const userLogin = await User.findOne({ email: email }).populate('cart');
     if (userLogin) {
       const isValid = await bcrypt.compare(password, userLogin.password);
       if (!isValid) {
@@ -70,18 +70,23 @@ const jwtVerify = async (req, res) => {
 
   const decodeToken = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
   if (decodeToken) {
-    const user = await User.findById(decodeToken._id).populate({
-      path: "cart",
-      populate: "items",
-    });
+    const user = await User.findById(decodeToken._id).populate('cart');
     //   .populate("rentals")
-    return res.send({ message: "User Validated", user });
+    return res.send({ message: 'User Validated', user });
   }
   res.status(400).send({ message: "Invalid Token" });
 };
-
+const reCaptchaVerify = async (req, res) => {
+  const { token } = req.body;
+  console.log(req.body);
+  const data = await axios.post(
+    `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`
+  );
+  res.status(200).send({ message: 'humannn', data: data.data });
+};
 module.exports = {
   signup,
   login,
   jwtVerify,
+  reCaptchaVerify,
 };
