@@ -68,17 +68,37 @@ const removeFromCart = async (req, res) => {
   const { id } = req.user;
   const { bookID } = req.body;
   try {
-    const user = await User.findById(id).populate('cart');
-    const newCart = user.cart;
-    const updatedCart = newCart.filter((item) => {
-        console.log(item,"HERE")
-        item.valueOf() !== bookID});
-    // const isAdded = await User.findByIdAndUpdate(id, { cart: updatedCart });
-    // if (isAdded) {
-    //   res.status(200).send({ message: "Removed From Cart" });
-    // } else {
-    //   res.status(400).send({ message: "Failed To Remove From Cart" });
-    // }
+    const user = await User.findById(id).populate({
+        path:"cart",
+        populate:"items"
+    })
+
+    var reduce = 0;
+    const newCart = user.cart.items;
+    const updatedCart = newCart.filter((item) => item._id.valueOf() !== bookID);
+
+    console.log(updatedCart)
+
+
+    const cart = newCart.map((item)=>{
+        if(item._id.valueOf() === bookID) reduce = Number(item.rentPrice)
+    })
+
+    var total = user.cart.total
+    if(updatedCart.length > 0){
+        total-=reduce
+    }
+
+
+    const isAdded = await User.findByIdAndUpdate(id, { cart: {
+        items:updatedCart,
+        total
+    } });
+    if (isAdded) {
+      res.status(200).send({ message: "Removed From Cart" });
+    } else {
+      res.status(400).send({ message: "Failed To Remove From Cart" });
+    }
   } catch (error) {
     res.status(400).send({ message: "Something went wrong" });
   }
