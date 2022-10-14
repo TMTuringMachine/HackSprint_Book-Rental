@@ -3,10 +3,10 @@ var Schema = mongoose.Schema;
 
 const orderSchema = new mongoose.Schema({
   books:[{  
-          bookDetails:{
+         
           type: Schema.Types.ObjectId,
           ref: "BOOK",
-        },
+       
     }
   ],
   totalPrice: {
