@@ -60,7 +60,7 @@ const addToCart = async (req, res) => {
       res.status(400).send({ message: "Failed To Add To Cart" });
     }
   } catch (error) {
-    res.status(400).send({ message: "Something went wrong" });
+    res.status(400).send({ message: "Something went wrong" ,error});
   }
 };
 
@@ -68,15 +68,17 @@ const removeFromCart = async (req, res) => {
   const { id } = req.user;
   const { bookID } = req.body;
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate('cart');
     const newCart = user.cart;
-    const updatedCart = newCart.filter((item) => item.valueOf() !== bookID);
-    const isAdded = await User.findByIdAndUpdate(id, { cart: updatedCart });
-    if (isAdded) {
-      res.status(200).send({ message: "Removed From Cart" });
-    } else {
-      res.status(400).send({ message: "Failed To Remove From Cart" });
-    }
+    const updatedCart = newCart.filter((item) => {
+        console.log(item,"HERE")
+        item.valueOf() !== bookID});
+    // const isAdded = await User.findByIdAndUpdate(id, { cart: updatedCart });
+    // if (isAdded) {
+    //   res.status(200).send({ message: "Removed From Cart" });
+    // } else {
+    //   res.status(400).send({ message: "Failed To Remove From Cart" });
+    // }
   } catch (error) {
     res.status(400).send({ message: "Something went wrong" });
   }
@@ -98,7 +100,7 @@ const checkout = async (req, res) => {
     if (user) {
       console.log("okay user is verified");
       let cart = user.cart.items;
-      let books = cart.map((e) => e.id);
+      let books = cart?.map((e) => e.id);
       console.log("books here", books);
       var totalPrice = cart.total;
       var { address, city, state, pincode } = req.body;
@@ -139,7 +141,12 @@ const checkout = async (req, res) => {
         if (ordersaved) {
           let currrentals = user.rentals;
           currrentals.push({ isActive: true, order: ordersaved })
-          const usr = await User.findByIdAndUpdate(user.id,{ rentals:currrentals,cart:null})
+          console.log("HERE",user)
+          const usr = await User.findByIdAndUpdate(user.id,{ rentals:currrentals,cart:{
+            items:[],
+            total:0
+          }})
+
         if(usr) res.status(200).send({ message: "order checked out" });
         }
       } catch (error) {
