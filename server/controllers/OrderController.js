@@ -215,7 +215,6 @@ const checkout = async (req, res) => {
 
       console.log("Error occured", error);
     }
-  }
 };
 
 const getRentals = async (req, res) => {

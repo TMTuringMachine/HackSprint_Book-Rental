@@ -86,6 +86,7 @@ const SignupPage = ({ setCurrentState }) => {
           <CustomTextfield
             label="Password"
             fullWidth
+            type="password"
             onChange={handleChange}
             name="password"
             value={data.password}
@@ -94,6 +95,7 @@ const SignupPage = ({ setCurrentState }) => {
           <CustomTextfield
             label="Confirm Password"
             fullWidth
+            type="password"
             onChange={handleChange}
             name="cpassword"
             value={data.cpassword}
