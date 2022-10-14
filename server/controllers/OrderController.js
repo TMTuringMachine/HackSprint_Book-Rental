@@ -138,15 +138,9 @@ const checkout = async (req, res) => {
         const ordersaved = await order.save();
         if (ordersaved) {
           let currrentals = user.rentals;
-          user.set({
-            rentals: currrentals.push({ isActive: true, order: ordersaved }),
-          });
-
-          user.set({
-            cart:null
-          })
-
-          res.status(200).send({ message: "order checked out" });
+          currrentals.push({ isActive: true, order: ordersaved })
+          const usr = await User.findByIdAndUpdate(user.id,{ rentals:currrentals,cart:null})
+        if(usr) res.status(200).send({ message: "order checked out" });
         }
       } catch (error) {
         res.status(403).send({ message: "error occured" });
