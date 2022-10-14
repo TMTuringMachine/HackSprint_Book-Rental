@@ -8,7 +8,7 @@ const MainLayout = () => {
   return (
     <div className="w-screen h-screen flex flex-col">
       <Header />
-      <div className="w-scree flex-1 p-8">
+      <div className="w-screen flex-1 p-5 overflow-y-auto">
         <Outlet />
       </div>
     </div>

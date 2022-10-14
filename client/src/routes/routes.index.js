@@ -34,7 +34,7 @@ export default function Router() {
       element: <Landing />,
     },
     {
-      path: "/client",
+      path: "/user",
       element: <MainLayout />,
       children: [
         {
@@ -69,7 +69,7 @@ const Landing = Loadable(
   lazy(() => import("../pages/landing/landing.component"))
 );
 
-const Home = Loadable(lazy(() => import("../pages/home/home.component")));
+const Home = Loadable(lazy(() => import("../pages/userHomepage/userHomepage.component")));
 
 //admin routes
 const AdminDashboard = Loadable(
