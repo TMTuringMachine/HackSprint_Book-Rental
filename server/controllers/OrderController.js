@@ -3,6 +3,7 @@ const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const User = require("../models/UserSchema");
 const Order = require("../models/OrderSchema")
+const Book = require("../models/BookSchema");
 
 const createOrder = async (req, res) => {
   var instance = new Razorpay({
@@ -46,11 +47,15 @@ const addToCart = async (req, res) => {
   const { bookID } = req.body;
   try {
     const user = await User.findById(id);
-    const newCart = user.cart;
-    newCart.push(bookID);
-    const isAdded = await User.findByIdAndUpdate(id, { cart: newCart });
+    const book = await Book.findById(bookID);
+    let newCart = user.cart;
+    newCart.items.push(bookID);
+    newCart.total += Number(book.rentPrice);
+    const isAdded = await User.findByIdAndUpdate(id, {
+      cart: newCart,
+    }).populate("cart");
     if (isAdded) {
-      res.status(200).send({ message: "Added To Cart" });
+      res.status(200).send({ message: "Added To Cart", cart: isAdded.cart });
     } else {
       res.status(400).send({ message: "Failed To Add To Cart" });
     }
