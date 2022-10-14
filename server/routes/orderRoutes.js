@@ -21,7 +21,7 @@ router.post('/removeFromCart',isLoggedIn,removeFromCart)
 router.get('/viewCart',isLoggedIn,getCart)
 router.post('/checkout',isLoggedIn,checkout)
 router.get('/getRentals',isLoggedIn,getRentals)
-router.post('/orderSummary',orderSummary)
+router.get('/orderSummary/:orderID',orderSummary)
 router.get('/getAllRentals', isLoggedIn, getAllRentals);
 
 

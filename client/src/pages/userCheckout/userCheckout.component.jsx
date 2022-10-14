@@ -4,9 +4,11 @@ import { useSelector } from "react-redux";
 import CustomButton from "../../components/CustomButton/CustomButton.component";
 import CustomTextfield from "../../components/CustomTextfield/CustomTextfield.component";
 import useMutation from "../../hooks/useMutation";
+import { useNavigate } from "react-router-dom";
 
 const UserCheckout = () => {
-  const [address, setAddress] = useState("address1");
+  const [address, setAddress] = useState(null);
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const [formAddress, setFormAddress] = useState({
     address: "",
@@ -19,6 +21,7 @@ const UserCheckout = () => {
     showSnack: true,
     onSuccess: (data) => {
       console.log(data, "lolol");
+      navigate(`/user/orderSummary/${data.orderID}`);
     },
   });
 
@@ -34,7 +37,14 @@ const UserCheckout = () => {
   };
 
   const handleAddAddress = () => {
-    mutate(formAddress);
+    if (address != null) {
+      const addr = user.Addresses.find((a) => a._id == address);
+      mutate(addr);
+      console.log(addr);
+    } else {
+      mutate(formAddress);
+    }
+    // mutate(formAddress);
   };
 
   return (
@@ -59,14 +69,7 @@ const UserCheckout = () => {
             onChange={handleChange}
           >
             {user?.Addresses.map((a) => (
-              <MenuItem
-                value={{
-                  address: a.address,
-                  city: a.city,
-                  state: a.state,
-                  pincode: a.pincode,
-                }}
-              >
+              <MenuItem value={a._id}>
                 {a.address} - {a.city} - {a.state} - {a.pincode}
               </MenuItem>
             ))}

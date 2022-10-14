@@ -8,10 +8,13 @@ const isLoggedIn = async (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
-    const rootUser = await User.findById(decoded._id);
+    const rootUser = await User.findById(decoded._id).populate({
+      path: "cart",
+      populate: "items",
+    });
     if (rootUser) {
       req.user = rootUser;
-    //   console.log(rootUser,"in the middleware!");
+      //   console.log(rootUser,"in the middleware!");
       next();
     }
   } catch (err) {
