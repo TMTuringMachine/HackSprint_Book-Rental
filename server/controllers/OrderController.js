@@ -70,9 +70,20 @@ const removeFromCart = async(req,res)=>{
     }
 }
 
+const getCart = async(req,res)=>{
+    const {id} = req.user;
+    const getCart = await User.findById(id).populate('cart');
+    if(getCart.cart){
+        res.status(200).send({ message: 'Cart Fetched',cart:getCart.cart });
+    }else{
+        res.status(400).send({ message: 'Failed to fetch Cart'});
+    }
+}
+
 module.exports = {
     createOrder,
     payment,
     addToCart,
-    removeFromCart
+    removeFromCart,
+    getCart
 };
