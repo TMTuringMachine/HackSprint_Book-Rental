@@ -16,8 +16,11 @@ import { useSnackbar } from 'notistack';
 import AddBookModal from '../../components/AddBookModal/AddBookModal.component';
 import CountUp from 'react-countup';
 import CSVModal from '../../components/CSVParser/CSVModal.component';
-const AdminDashboard = ({ open, setOpen, handleClose, handleOpen }) => {
+const AdminDashboard = () => {
   const [showAddBookModal, setShowAddBookModal] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'name', headerName: 'User Name', width: 200 },
