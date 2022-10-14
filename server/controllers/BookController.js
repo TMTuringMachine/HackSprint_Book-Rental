@@ -1,4 +1,6 @@
 const Book = require('../models/BookSchema');
+const { copyFile } = require('fs/promises');
+
 const addBooksFromCSV = async (req, res) => {
   const books = req.body.data;
 
@@ -44,7 +46,29 @@ const addSingleBook = async (req, res) => {
     res.status(500).send({ message: 'server error' });
   }
 };
+
+const getAllBooks = async (req, res) => {
+  const books = await Book.find();
+  if (books) {
+    res.status(200).send({ message: 'Fetched All Books', books });
+  } else {
+    res.status(400).send({ message: 'Failed to fetch' });
+  }
+};
+
+const getSingleBook = async (req, res) => {
+  const id = req.params.id;
+  const book = await Book.findById(id);
+  if (book) {
+    res.status(200).send({ message: 'Fetched Book', book });
+  } else {
+    res.status(400).send({ message: 'Failed to fetch' });
+  }
+};
+
 module.exports = {
   addBooksFromCSV,
+  getAllBooks,
+  getSingleBook,
   addSingleBook,
 };

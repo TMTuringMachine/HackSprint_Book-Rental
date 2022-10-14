@@ -62,7 +62,7 @@ const userSchema = new mongoose.Schema({
   cart:[
     {
         type: Schema.Types.ObjectId,
-        ref: "ORDER",
+        ref: "BOOK",
     }, 
   ]
 });
