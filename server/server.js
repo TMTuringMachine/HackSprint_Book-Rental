@@ -8,12 +8,12 @@ const bodyParser = require('body-parser');
 app.use(cors());
 //using middleware to parse json data
 app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-require('./db/conn');
-app.use('/', require('./routes/userRoutes'));
-app.use('/order', require('./routes/orderRoutes'));
-app.use('/books', require('./routes/bookRoutes'));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended:true}))
+require("./db/conn");
+app.use("/", require("./routes/userRoutes"));
+app.use("/order", require("./routes/orderRoutes"));
+app.use("/books", require("./routes/bookRoutes"));
 
 app.use('/cart/', require('./routes/cartcheckoutRoutes'));
 

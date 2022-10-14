@@ -1,10 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const {
-    addBooksFromCSV
+    addBooksFromCSV,
+    getAllBooks,
+    getSingleBook
 } = require("../controllers/BookController");
 
-
+router.get("/getAll",getAllBooks)
+router.get("/getBook/:id",getSingleBook)
 router.post("/addFromCSV", addBooksFromCSV);
 
 
