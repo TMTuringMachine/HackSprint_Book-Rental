@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 require("./db/conn");
-// app.use("/", require("./routes/UserRoutes"));
+app.use("/", require("./routes/userRoutes"));
 
 app.listen(port, () => {
   console.log(`App listening on port http://localhost:${port}`);
