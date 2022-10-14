@@ -19,9 +19,11 @@ const userSchema = new mongoose.Schema({
   },
   isAdmin: {
     type: Boolean,
+    default:false
   },
   isDeliveryBoy: {
     type: Boolean,
+    default:false,
   },
   Addresses:[
     {
@@ -42,7 +44,8 @@ const userSchema = new mongoose.Schema({
   rentals:[
     {
         isActive:{
-            type:Boolean
+            type:Boolean,
+            default:true
         },
         order:{
             type: Schema.Types.ObjectId,
