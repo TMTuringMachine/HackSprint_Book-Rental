@@ -32,7 +32,7 @@ const AdminDashboard = () => {
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'name', headerName: 'User Name', width: 200 },
     { field: 'email', headerName: 'Email', width: 250 },
-    { field: 'orderDate', headerName: 'OrderDate', width: 250 },
+    { field: 'date', headerName: 'OrderDate', width: 250 },
     { field: 'isActive', headerName: 'isActive', width: 150 },
     {
       field: 'details',
