@@ -1,3 +1,5 @@
-﻿Name,Email,Place,Mobile
-Vedant,vedant.gokhale20@vit.edu,Pune,92358346
-Vedant Gokhale,gokhalevedant06@gmail.com,Pune,546346
+﻿BookName,isbn,Author,RentPrice
+Book1,100,Vedant Gokhale,10000
+Book2,200,Vedant Gokhale,20000
+Book3,300,Vedant Gokhale,30000
+Book4,400,Vedant Gokhale,40000

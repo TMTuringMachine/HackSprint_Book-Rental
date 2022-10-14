@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { checkout } =require('../controllers/BookController')
+const {
+    addBooksFromCSV
+} = require("../controllers/BookController");
 
-router.route('/:id')
-.get()
-.post()
-.delete()
-.put()
+
+router.post("/addFromCSV", addBooksFromCSV);
+
+
+module.exports = router;

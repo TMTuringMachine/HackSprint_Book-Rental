@@ -55,7 +55,7 @@ export default function Router() {
     },
     {
       path:'/test',
-      element: <RazorpayComponent/>
+      element: <CSVParser/>
     }
   ]);
 }
