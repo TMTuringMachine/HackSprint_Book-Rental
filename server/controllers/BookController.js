@@ -69,9 +69,18 @@ const getSingleBook = async (req, res) => {
   }
 };
 
+const getRandomBook = async(req,res)=>{
+  const books = await Book.find();
+  const len = books.length;
+  const index = Math.floor(Math.random() * len);
+  if(len>0) return res.status(200).send({message:"Random Book Fetched",book:books[index]});
+  else res.status(400).send({message:"Something went wrong"});
+}
+
 module.exports = {
   addBooksFromCSV,
   getAllBooks,
   getSingleBook,
   addSingleBook,
+  getRandomBook
 };

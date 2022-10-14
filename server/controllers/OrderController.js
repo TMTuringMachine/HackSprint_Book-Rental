@@ -1,24 +1,21 @@
-const { response } = require("express");
-const Razorpay = require("razorpay");
-const crypto = require("crypto");
-const User = require("../models/UserSchema");
-const Order = require("../models/OrderSchema");
-const Book = require("../models/BookSchema");
+const { response } = require('express');
+const Razorpay = require('razorpay');
+const crypto = require('crypto');
+const User = require('../models/UserSchema');
+const Order = require('../models/OrderSchema');
+const Book = require('../models/BookSchema');
 
 const createOrder = async (req, res) => {
+    const {amount} = req.body
   var instance = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET,
   });
   const resp = instance.orders.create(
     {
-      amount: 50000,
-      currency: "INR",
-      receipt: "receipt#1",
-      notes: {
-        key1: "value3",
-        key2: "value2",
-      },
+      amount: amount,
+      currency: 'INR',
+      receipt: 'receipt#1',
     },
     (err, response) => {
       res.send(response);
@@ -38,8 +35,8 @@ const payment = async (req, res) => {
   // } else {
   // //   return res.status(200).json({ ok: false });
   // }
-  console.log("PAYMENT DONE");
-  res.redirect("/success");
+  console.log('PAYMENT DONE');
+  res.redirect('/success');
 };
 
 const addToCart = async (req, res) => {
@@ -125,14 +122,14 @@ const checkout = async (req, res) => {
   const user = req.user;
   let address11;
   if (user) {
-    console.log("okay user is verified");
+    console.log('okay user is verified');
     let cart = user.cart.items;
     let books = cart?.map((e) => e.id);
-    console.log("books here", books);
+    console.log('books here', books);
     var totalPrice = cart.total;
     var { address, city, state, pincode } = req.body;
     // let addressobj=await user.Addresses
-    console.log("ADRESSsf ", user.Addresses);
+    console.log('ADRESSsf ', user.Addresses);
     let address1 = user.Addresses.filter(
       (e) =>
         e.address == address &&
@@ -140,12 +137,12 @@ const checkout = async (req, res) => {
         e.state == state &&
         e.pincode == pincode
     );
-    console.log("now", address);
+    console.log('now', address);
     if (address1.length !== 0) {
-      console.log("is there");
+      console.log('is there');
       address11 = { address, city, state, pincode };
     } else {
-      console.log("else here");
+      console.log('else here');
       let prev = user.Addresses;
       prev.push({ address, city, state, pincode });
       address11 = { address, city, state, pincode };
@@ -185,7 +182,7 @@ const checkout = async (req, res) => {
     } catch (error) {
       res.status(403).send({ message: "error occured" });
 
-      console.log("Error occured");
+      console.log('Error occured');
     }
   }
 };
@@ -234,6 +231,15 @@ const getAllRentals = async (req, res) => {
     res.status(500).send({ message: "some error occurred" });
   }
 };
+const orderSummary = async(req,res)=>{
+    const {orderID} = req.body;
+    const orderDetails = await Order.findById(orderID).populate("books")
+    if(orderDetails) res.status(200).send({message:"Order Summary",orderDetails})
+    else{
+        res.status(400).send({message:"Error occurred"})
+    }
+}   
+
 
 module.exports = {
   createOrder,
@@ -244,4 +250,5 @@ module.exports = {
   checkout,
   getRentals,
   getAllRentals,
+  orderSummary
 };
