@@ -14,9 +14,9 @@ import palette from '../../theme/palette';
 import { DataGrid } from '@mui/x-data-grid';
 import { useSnackbar } from 'notistack';
 import AddBookModal from '../../components/AddBookModal/AddBookModal.component';
-
 import CountUp from 'react-countup';
-const AdminDashboard = () => {
+import CSVModal from '../../components/CSVParser/CSVModal.component';
+const AdminDashboard = ({ open, setOpen, handleClose, handleOpen }) => {
   const [showAddBookModal, setShowAddBookModal] = useState(false);
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
