@@ -1,5 +1,7 @@
 // ----------------------------------------------------------------------
 
+import axiosInstance from './axiosInstance';
+
 const isValidToken = (accessToken) => {
   if (!accessToken) {
     return false;
@@ -9,9 +11,11 @@ const isValidToken = (accessToken) => {
 
 const setSession = (accessToken) => {
   if (accessToken) {
-    localStorage.setItem("accessToken", accessToken);
+    axiosInstance.defaults.headers.common.Authorization = accessToken;
+    localStorage.setItem('accessToken', accessToken);
   } else {
-    localStorage.removeItem("accessToken");
+    delete axiosInstance.defaults.headers.common.Authorization;
+    localStorage.removeItem('accessToken');
   }
 };
 

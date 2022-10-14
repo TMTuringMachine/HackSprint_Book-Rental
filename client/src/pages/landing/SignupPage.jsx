@@ -1,14 +1,24 @@
-import CustomTextfield from "../../components/CustomTextfield/CustomTextfield.component";
-import CustomButton from "../../components/CustomButton/CustomButton.component";
-import { Fade } from "react-reveal";
-import { useState } from "react";
+import CustomTextfield from '../../components/CustomTextfield/CustomTextfield.component';
+import CustomButton from '../../components/CustomButton/CustomButton.component';
+import { Fade } from 'react-reveal';
+import { useState } from 'react';
+import useMutation from '../../hooks/useMutation';
+import { useNavigate } from 'react-router-dom';
 
 const SignupPage = ({ setCurrentState }) => {
+  const navigate = useNavigate();
+  const { mutate, isLoading } = useMutation({
+    url: '/signup',
+    showSnack: true,
+    onSuccess: (res) => setCurrentState('login'),
+    onError: (err) => console.log(err),
+  });
   const [data, setData] = useState({
-    username: "",
-    email: "",
-    phone: "",
-    password: "",
+    name: '',
+    email: '',
+    phone: '',
+    password: '',
+    cpassword: '',
   });
 
   const handleChange = (e) => {
@@ -20,6 +30,8 @@ const SignupPage = ({ setCurrentState }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(data);
+    mutate(data);
   };
 
   return (
@@ -33,7 +45,7 @@ const SignupPage = ({ setCurrentState }) => {
             label="Username"
             fullWidth
             onChange={handleChange}
-            name="username"
+            name="name"
             value={data.username}
             required
           />
@@ -61,16 +73,24 @@ const SignupPage = ({ setCurrentState }) => {
             value={data.password}
             required
           />
-          <CustomButton type="submit" style={{ marginTop: "30px" }}>
+          <CustomTextfield
+            label="Confirm Password"
+            fullWidth
+            onChange={handleChange}
+            name="cpassword"
+            value={data.cpassword}
+            required
+          />
+          <CustomButton type="submit" style={{ marginTop: '30px' }}>
             SIGNUP
           </CustomButton>
         </form>
         <div className="mt-3">
-          Already a member?{" "}
+          Already a member?{' '}
           <button
             className="text-primary font-semibold cursor-pointer"
             onClick={() => {
-              setCurrentState("login");
+              setCurrentState('login');
             }}
           >
             Log in

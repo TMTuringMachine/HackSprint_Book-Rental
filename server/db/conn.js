@@ -1,4 +1,4 @@
-var mongoose = require("mongoose");
+var mongoose = require('mongoose');
 //Database URI from .env
 const MONGODB_URI = process.env.DB;
 
@@ -9,9 +9,9 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("Database connection successful");
+    console.log('Database connection successful');
   })
   .catch((err) => {
-    console.log("No connection with DB");
+    console.log('No connection with DB');
     console.log(err);
   });

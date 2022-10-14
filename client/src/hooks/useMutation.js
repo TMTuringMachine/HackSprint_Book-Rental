@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback } from 'react';
 
-import axiosInstance from "../utils/axiosInstance";
-import { useSnackbar } from "notistack";
+import axiosInstance from '../utils/axiosInstance';
+import { useSnackbar } from 'notistack';
 
 const useMutation = ({ url, showSnack, onSuccess, onError }) => {
   const [response, setResponse] = useState(null);
@@ -16,12 +16,13 @@ const useMutation = ({ url, showSnack, onSuccess, onError }) => {
       const res = await axiosInstance.post(url, data);
       setResponse(res);
       if (res.status == 200 && onSuccess) {
+        console.log(res.data);
         onSuccess(res.data);
       }
       if (showSnack && showSnack == true) {
         if (res.status == 200) {
-          enqueueSnackbar(res.data?.message || "Request successfully!", {
-            variant: "success",
+          enqueueSnackbar(res.data?.message || 'Request successfully!', {
+            variant: 'success',
           });
         }
       }
@@ -30,10 +31,10 @@ const useMutation = ({ url, showSnack, onSuccess, onError }) => {
       if (onError) {
         onError(err);
       }
-      console.log(err, "ERROR");
+      console.log(err, 'ERROR');
       if (showSnack && showSnack == true) {
-        enqueueSnackbar(err.response?.data?.message || "Something went wrong", {
-          variant: "error",
+        enqueueSnackbar(err.response?.data?.message || 'Something went wrong', {
+          variant: 'error',
         });
       }
     }
