@@ -2,20 +2,24 @@ const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
 dotenv.config({ path: '.env' });
-const port = process.env.PORT || 5000;
-var bodyParser = require('body-parser');
-dotenv.config({ path: ".env" }); 
-const cors = require("cors");
+const port = process.env.PORT || 5001;
+const cors = require('cors');
+const bodyParser = require('body-parser');
 app.use(cors());
 //using middleware to parse json data
 app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}))
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended:true}))
 require("./db/conn");
 app.use("/", require("./routes/userRoutes"));
 app.use("/order", require("./routes/orderRoutes"));
+app.use("/books", require("./routes/bookRoutes"));
 
+<<<<<<< HEAD
+=======
+app.use('/cart/', require('./routes/cartcheckoutRoutes'));
+>>>>>>> ecf5eaf3194e24273300b99c0b6ba67a3ec99f6d
 
-app.listen(process.env.PORT || 5000, () => {
+app.listen(process.env.PORT || 5001, () => {
   console.log(`App listening on port http://localhost:${port}`);
 });

@@ -1,10 +1,15 @@
 const { response } = require('express');
 const Razorpay = require('razorpay');
+<<<<<<< HEAD
 const crypto = require('crypto')
 const Order =require('../models/OrderSchema')
 const Book =require('../models/BookSchema');
 const User = require('../models/UserSchema');
 var jwt = require('jsonwebtoken');
+=======
+const crypto = require('crypto');
+const User = require('../models/UserSchema');
+>>>>>>> ecf5eaf3194e24273300b99c0b6ba67a3ec99f6d
 
 const createOrder = async(req,res)=>{
     var instance = new Razorpay({ key_id: process.env.RAZORPAY_KEY_ID, key_secret: process.env.RAZORPAY_KEY_SECRET })
@@ -37,6 +42,7 @@ const payment = async(req,res)=>{
     res.redirect("/success")
 }
 
+<<<<<<< HEAD
 const checkout= async (req,res)=>{
     const decodeToken = jwt.verify(req.headers.authorization, process.env.JWT_PRIVATE_KEY);
     if (decodeToken) {
@@ -130,9 +136,59 @@ const checkout= async (req,res)=>{
     
     
     }
+=======
+const addToCart = async(req,res)=>{
+    const {id} = req.user;
+    const {bookID} = req.body
+    try {
+        const user = await User.findById(id);
+        const newCart = user.cart;
+        newCart.push(bookID);
+        const isAdded = await User.findByIdAndUpdate(id,{cart:newCart});
+        if(isAdded){
+            res.status(200).send({ message: 'Added To Cart' });
+        }else{
+            res.status(400).send({ message: 'Failed To Add To Cart' });
+        }
+    } catch (error) {
+        res.status(400).send({ message: 'Something went wrong' });
+    }
+}
+
+const removeFromCart = async(req,res)=>{
+    const {id} = req.user;
+    const {bookID} = req.body
+    try {
+        const user = await User.findById(id);
+        const newCart = user.cart;
+        const updatedCart = newCart.filter((item) => item.valueOf() !== bookID);
+        const isAdded = await User.findByIdAndUpdate(id,{cart:updatedCart});
+        if(isAdded){
+            res.status(200).send({ message: 'Removed From Cart' });
+        }else{
+            res.status(400).send({ message: 'Failed To Remove From Cart' });
+        }
+    } catch (error) {
+        res.status(400).send({ message: 'Something went wrong' });
+    }
+}
+
+const getCart = async(req,res)=>{
+    const {id} = req.user;
+    const getCart = await User.findById(id).populate('cart');
+    if(getCart.cart){
+        res.status(200).send({ message: 'Cart Fetched',cart:getCart.cart });
+    }else{
+        res.status(400).send({ message: 'Failed to fetch Cart'});
+    }
+}
+>>>>>>> ecf5eaf3194e24273300b99c0b6ba67a3ec99f6d
 
 module.exports = {
     checkout,
     createOrder,
-    payment
+    payment,
+    addToCart,
+    removeFromCart,
+    getCart
 };

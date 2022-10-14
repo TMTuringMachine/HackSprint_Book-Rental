@@ -1,9 +1,17 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const { checkout } =require('../controllers/BookController')
+const {
+  addBooksFromCSV,
+  getAllBooks,
+  getSingleBook,
+  addSingleBook,
+} = require('../controllers/BookController');
 
-router.route('/:id')
-.get()
-.post()
-.delete()
-.put()
+const multer = require('multer');
+const storage = require('multer-storage-cloudinary');
+const upload = multer({ storage });
+router.get('/getAll', getAllBooks);
+router.get('/getBook/:id', getSingleBook);
+router.post('/addFromCSV', addBooksFromCSV);
+router.post('/addSingleBook', upload.single('image'), addSingleBook);
+module.exports = router;
