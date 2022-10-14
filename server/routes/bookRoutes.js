@@ -8,7 +8,7 @@ const {
 } = require('../controllers/BookController');
 
 const multer = require('multer');
-const storage = require('multer-storage-cloudinary');
+const storage = require('../cloudinary/cloudinary.config');
 const upload = multer({ storage });
 router.get('/getAll', getAllBooks);
 router.get('/getBook/:id', getSingleBook);

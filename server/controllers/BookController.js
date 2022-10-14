@@ -28,6 +28,7 @@ const addSingleBook = async (req, res) => {
     let image =
       'https://images.unsplash.com/photo-1592496431122-2349e0fbc666?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2112&q=80';
     if (req.file) {
+      console.log(req.file);
       image = req.file.path;
     }
     const book = await Book.create({
@@ -39,7 +40,8 @@ const addSingleBook = async (req, res) => {
       image,
     });
     if (book) {
-      res.status(200).send({ message: 'Book added successfully!' });
+      res.status(200).send({ message: 'Book added successfully!', data: book });
+      return;
     }
     res.status(400).send({ message: 'some error occurred' });
   } catch (e) {

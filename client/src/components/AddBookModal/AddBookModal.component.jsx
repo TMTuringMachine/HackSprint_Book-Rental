@@ -8,17 +8,19 @@ import {
   InputLabel,
   FormControl,
   Box,
-} from "@mui/material";
-import React, { useState, useCallback } from "react";
-import { CustomButton } from "../../globals/styles";
-import { ModalContainer } from "./AddBookModal.styles";
-import { useDropzone } from "react-dropzone";
-
+} from '@mui/material';
+import React, { useState, useCallback } from 'react';
+import { CustomButton } from '../../globals/styles';
+import { ModalContainer } from './AddBookModal.styles';
+import { useDropzone } from 'react-dropzone';
+import { useSnackbar } from 'notistack';
+import axiosInstance from '../../utils/axiosInstance';
 const AddBookModal = ({ state, toggleModal }) => {
+  const { enqueueSnackbar } = useSnackbar();
   const [data, setData] = useState({
-    name: "",
-    isbn: "",
-    author: "",
+    name: '',
+    isbn: '',
+    author: '',
     rentPrice: 0,
     stock: 0,
   });
@@ -29,7 +31,37 @@ const AddBookModal = ({ state, toggleModal }) => {
   };
   const handleSubmit = () => {
     console.log(data);
-    console.log(imageToUpload);
+    let formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('isbn', data.isbn);
+    formData.append('author', data.author);
+    formData.append('rentPrice', data.rentPrice);
+    formData.append('stock', data.stock);
+    formData.append('image', imageToUpload);
+
+    submitFun(formData);
+  };
+
+  const submitFun = async (data) => {
+    try {
+      const res = await axiosInstance.post('/books/addSingleBook', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      enqueueSnackbar(res.data?.message || 'Request successfully!', {
+        variant: 'success',
+      });
+      toggleModal();
+      if (res.status != 200) {
+        enqueueSnackbar(res.data?.message || 'Some error occurred!', {
+          variant: 'error',
+        });
+      }
+      console.log(res);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -43,7 +75,7 @@ const AddBookModal = ({ state, toggleModal }) => {
     <Modal open={state} onClose={toggleModal}>
       <Slide direction="up" in={state}>
         <ModalContainer>
-          <Typography sx={{ fontSize: "1.2em", fontWeight: 600 }}>
+          <Typography sx={{ fontSize: '1.2em', fontWeight: 600 }}>
             ADD BOOK
           </Typography>
           <TextField
@@ -84,14 +116,14 @@ const AddBookModal = ({ state, toggleModal }) => {
           <Box
             sx={{
               border: isDragActive
-                ? "2px dashed #109ece"
-                : "2px dashed #a4a4a4",
-              width: "100%",
-              padding: "55px 20px",
-              borderRadius: "10px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+                ? '2px dashed #109ece'
+                : '2px dashed #a4a4a4',
+              width: '100%',
+              padding: '55px 20px',
+              borderRadius: '10px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
             }}
             {...getRootProps()}
           >
