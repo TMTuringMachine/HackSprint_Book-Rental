@@ -3,12 +3,7 @@ var Schema = mongoose.Schema;
 
 const orderSchema = new mongoose.Schema({
   books:[{  
-      userRating:{
-        type:Number,
-        min:0,
-        max:5,
-      },  
-      bookDetails:{
+          bookDetails:{
           type: Schema.Types.ObjectId,
           ref: "BOOK",
         },
