@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isLoggedIn: false,
@@ -6,7 +6,7 @@ const initialState = {
 };
 
 const slice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     registerSuccess(state, action) {
@@ -25,10 +25,14 @@ const slice = createSlice({
       state.isLoggedIn = false;
       state.user = null;
     },
+    addToCartSuccess(state, action) {
+      state.user.cart = action.payload;
+      return state;
+    },
   },
 });
 
-export const { registerSuccess, loginSuccess, initialize, logoutSuccess } =
+export const { registerSuccess, loginSuccess, initialize, logoutSuccess,addToCartSuccess } =
   slice.actions;
 
 export default slice.reducer;

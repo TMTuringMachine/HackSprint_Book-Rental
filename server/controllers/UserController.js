@@ -33,7 +33,7 @@ const login = async (req, res) => {
         .status(400)
         .send({ message: 'Email or password cannot be blank' });
     }
-    const userLogin = await User.findOne({ email: email });
+    const userLogin = await User.findOne({ email: email }).populate("cart");
     if (userLogin) {
       const isValid = await bcrypt.compare(password, userLogin.password);
       if (!isValid) {
@@ -70,7 +70,7 @@ const jwtVerify = async (req, res) => {
 
   const decodeToken = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
   if (decodeToken) {
-    const user = await User.findById(decodeToken._id);
+    const user = await User.findById(decodeToken._id).populate("cart");
     //   .populate("rentals")
     return res.send({ message: 'User Validated', user });
   }
