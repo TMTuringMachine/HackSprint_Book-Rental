@@ -60,38 +60,39 @@ const addToCart = async (req, res) => {
   }
 };
 
-const removeFromCart = async (req, res) => {
-  const { id } = req.user;
-  const { bookID } = req.body;
-  try {
-    const user = await User.findById(id);
-    const newCart = user.cart;
-    const updatedCart = newCart.filter((item) => item.valueOf() !== bookID);
-    const isAdded = await User.findByIdAndUpdate(id, { cart: updatedCart });
-    if (isAdded) {
-      res.status(200).send({ message: "Removed From Cart" });
-    } else {
-      res.status(400).send({ message: "Failed To Remove From Cart" });
+const removeFromCart = async(req,res)=>{
+    const {id} = req.user;
+    const {bookID} = req.body
+    try {
+        const user = await User.findById(id);
+        const newCart = user.cart;
+        const updatedCart = newCart.filter((item) => item.valueOf() !== bookID);
+        const isAdded = await User.findByIdAndUpdate(id,{cart:updatedCart});
+        if(isAdded){
+            res.status(200).send({ message: 'Removed From Cart' });
+        }else{
+            res.status(400).send({ message: 'Failed To Remove From Cart' });
+        }
+    } catch (error) {
+        res.status(400).send({ message: 'Something went wrong' });
     }
-  } catch (error) {
-    res.status(400).send({ message: "Something went wrong" });
-  }
-};
+}
 
-const getCart = async (req, res) => {
-  const { id } = req.user;
-  const getCart = await User.findById(id).populate("cart");
-  if (getCart.cart) {
-    res.status(200).send({ message: "Cart Fetched", cart: getCart.cart });
-  } else {
-    res.status(400).send({ message: "Failed to fetch Cart" });
-  }
-};
+const getCart = async(req,res)=>{
+    const {id} = req.user;
+    const getCart = await User.findById(id).populate('cart');
+    if(getCart.cart){
+        res.status(200).send({ message: 'Cart Fetched',cart:getCart.cart });
+    }else{
+        res.status(400).send({ message: 'Failed to fetch Cart'});
+    }
+}
 
 module.exports = {
-  createOrder,
-  payment,
-  addToCart,
-  removeFromCart,
-  getCart,
+    createOrder,
+    payment,
+    addToCart,
+    removeFromCart,
+    getCart,
+    checkout
 };

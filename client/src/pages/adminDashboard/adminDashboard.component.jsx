@@ -5,28 +5,28 @@ import {
   Button,
   IconButton,
   useTheme,
-} from "@mui/material";
-import React, { useState, useEffect } from "react";
-import { MainPage } from "../../globals/styles";
-import { Icon } from "@iconify/react";
-import * as S from "./adminDashboard.styles";
-import palette from "../../theme/palette";
-import { DataGrid } from "@mui/x-data-grid";
-import { useSnackbar } from "notistack";
-import AddBookModal from "../../components/AddBookModal/AddBookModal.component";
-
-import CountUp from "react-countup";
-const AdminDashboard = () => {
+} from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { MainPage } from '../../globals/styles';
+import { Icon } from '@iconify/react';
+import * as S from './adminDashboard.styles';
+import palette from '../../theme/palette';
+import { DataGrid } from '@mui/x-data-grid';
+import { useSnackbar } from 'notistack';
+import AddBookModal from '../../components/AddBookModal/AddBookModal.component';
+import CountUp from 'react-countup';
+import CSVModal from '../../components/CSVParser/CSVModal.component';
+const AdminDashboard = ({ open, setOpen, handleClose, handleOpen }) => {
   const [showAddBookModal, setShowAddBookModal] = useState(false);
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "name", headerName: "User Name", width: 200 },
-    { field: "email", headerName: "Email", width: 250 },
-    { field: "orderDate", headerName: "OrderDate", width: 250 },
-    { field: "isDelivered", headerName: "Delievered?", width: 150 },
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'name', headerName: 'User Name', width: 200 },
+    { field: 'email', headerName: 'Email', width: 250 },
+    { field: 'orderDate', headerName: 'OrderDate', width: 250 },
+    { field: 'isDelivered', headerName: 'Delievered?', width: 150 },
     {
-      field: "details",
-      headerName: "Details",
+      field: 'details',
+      headerName: 'Details',
       width: 100,
       renderCell: (params) => {
         return (
@@ -40,31 +40,31 @@ const AdminDashboard = () => {
   const rows = [
     {
       id: 1,
-      name: "test",
-      orderDate: "14/08/2022",
-      email: "test@gmail.com",
+      name: 'test',
+      orderDate: '14/08/2022',
+      email: 'test@gmail.com',
       isDelivered: false,
     },
     {
       id: 1,
-      name: "test",
-      orderDate: "14/08/2022",
-      email: "test@gmail.com",
+      name: 'test',
+      orderDate: '14/08/2022',
+      email: 'test@gmail.com',
       isDelivered: false,
     },
 
     {
       id: 1,
-      name: "test",
-      orderDate: "14/08/2022",
-      email: "test@gmail.com",
+      name: 'test',
+      orderDate: '14/08/2022',
+      email: 'test@gmail.com',
       isDelivered: false,
     },
     {
       id: 1,
-      name: "test",
-      orderDate: "14/08/2022",
-      email: "test@gmail.com",
+      name: 'test',
+      orderDate: '14/08/2022',
+      email: 'test@gmail.com',
       isDelivered: false,
     },
   ];
@@ -76,13 +76,19 @@ const AdminDashboard = () => {
 
   return (
     <MainPage>
+      <CSVModal
+        open={open}
+        setOpen={setOpen}
+        handleClose={handleClose}
+        handleOpen={handleOpen}
+      />
       <S.DashboardContainer>
         <Typography
           sx={{
-            fontSize: "2em",
-            letterSpacing: "2px",
+            fontSize: '2em',
+            letterSpacing: '2px',
             fontWeight: 600,
-            [breakpoints.down("md")]: { fontSize: "1.5em" },
+            [breakpoints.down('md')]: { fontSize: '1.5em' },
           }}
         >
           BookMyBook admin console
@@ -93,10 +99,10 @@ const AdminDashboard = () => {
               <S.StatCard>
                 <Box
                   sx={{
-                    width: "100%",
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
                   }}
                 >
                   <Icon
@@ -111,7 +117,7 @@ const AdminDashboard = () => {
                     height="30px"
                   />
                 </Box>
-                <Typography sx={{ fontSize: "2em", fontWeight: 700 }}>
+                <Typography sx={{ fontSize: '2em', fontWeight: 700 }}>
                   <CountUp end={28} duration={1} />
                 </Typography>
                 <Typography sx={{ fontWeight: 600, color: palette.primary }}>
@@ -122,10 +128,10 @@ const AdminDashboard = () => {
               <S.StatCard>
                 <Box
                   sx={{
-                    width: "100%",
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
                   }}
                 >
                   <Icon
@@ -140,7 +146,7 @@ const AdminDashboard = () => {
                     height="30px"
                   />
                 </Box>
-                <Typography sx={{ fontSize: "2em", fontWeight: 700 }}>
+                <Typography sx={{ fontSize: '2em', fontWeight: 700 }}>
                   <CountUp end={28} duration={1} />
                 </Typography>
                 <Typography sx={{ fontWeight: 600, color: palette.primary }}>
@@ -149,7 +155,7 @@ const AdminDashboard = () => {
               </S.StatCard>
             </S.StatsContainer>
             <S.TableContainer>
-              <Typography sx={{ fontSize: "1.2em", fontWeight: 700 }}>
+              <Typography sx={{ fontSize: '1.2em', fontWeight: 700 }}>
                 Quick Access
               </Typography>
               <S.InputsContainer></S.InputsContainer>
@@ -160,11 +166,11 @@ const AdminDashboard = () => {
                   pageSize={10}
                   rowsPerPageOptions={[10]}
                   sx={{
-                    backgroundColor: "#fff",
-                    border: "none",
-                    borderRadius: "20px",
+                    backgroundColor: '#fff',
+                    border: 'none',
+                    borderRadius: '20px',
                     boxShadow: palette.shadow,
-                    padding: "15px",
+                    padding: '15px',
                   }}
                   autoHeight
                 />
@@ -173,7 +179,7 @@ const AdminDashboard = () => {
           </S.DashboardLeft>
           <S.DashboardRight>
             <S.ActionBarContainer>
-              <Typography sx={{ fontSize: "1.2em", fontWeight: 700 }}>
+              <Typography sx={{ fontSize: '1.2em', fontWeight: 700 }}>
                 Actions Bar
               </Typography>
               <S.ActionBarItem>
@@ -183,35 +189,36 @@ const AdminDashboard = () => {
                   height="35px"
                   color={palette.primary}
                 />
-                <Box sx={{ width: "70%" }} onClick={toggleAddBookModal}>
-                  <Typography sx={{ fontSize: "0.9em", fontWeight: 600 }}>
+                <Box sx={{ width: '70%' }} onClick={toggleAddBookModal}>
+                  <Typography sx={{ fontSize: '0.9em', fontWeight: 600 }}>
                     ADD A BOOK
                   </Typography>
                   <Typography
-                    sx={{ fontSize: "0.65em", color: "gray" }}
+                    sx={{ fontSize: '0.65em', color: 'gray' }}
                     className="subtitle"
                   >
                     Add a single book to the library
                   </Typography>
                 </Box>
               </S.ActionBarItem>
+
               <AddBookModal
                 state={showAddBookModal}
                 toggleModal={toggleAddBookModal}
               />
-              <S.ActionBarItem onClick={() => {}}>
+              <S.ActionBarItem onClick={(e) => handleOpen()}>
                 <Icon
                   icon="fluent:people-team-16-filled"
                   width="35px"
                   height="35px"
                   color={palette.primary}
                 />
-                <Box sx={{ width: "70%" }}>
-                  <Typography sx={{ fontSize: "0.9em", fontWeight: 600 }}>
+                <Box sx={{ width: '70%' }}>
+                  <Typography sx={{ fontSize: '0.9em', fontWeight: 600 }}>
                     EXCEL IMPORT
                   </Typography>
                   <Typography
-                    sx={{ fontSize: "0.65em", color: "gray" }}
+                    sx={{ fontSize: '0.65em', color: 'gray' }}
                     className="subtitle"
                   >
                     Add books from excel sheet to the library

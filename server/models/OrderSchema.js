@@ -12,6 +12,20 @@ const orderSchema = new mongoose.Schema({
   totalPrice: {
     type: Number,
   },
+  Address:    {
+        address:{
+            type:String
+        },
+        city:{
+            type:String
+        },
+        state:{
+            type:String
+        },
+        pincode:{
+            type:Number
+        }
+    },
   isOutForDelivery:{
     type:Boolean,
     default:false
