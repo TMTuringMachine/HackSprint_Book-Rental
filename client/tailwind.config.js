@@ -9,6 +9,9 @@ module.exports = {
         surface: "#000",
         surface2: "#808080",
       },
+      boxShadow: {
+        shadow1: "0px 8px 20px rgba(35, 35, 35, 0.1)",
+      },
     },
   },
   plugins: [],
