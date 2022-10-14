@@ -16,17 +16,24 @@ import { useSnackbar } from 'notistack';
 import AddBookModal from '../../components/AddBookModal/AddBookModal.component';
 import CountUp from 'react-countup';
 import CSVModal from '../../components/CSVParser/CSVModal.component';
+import useQuery from '../../hooks/useQuery';
 const AdminDashboard = () => {
   const [showAddBookModal, setShowAddBookModal] = useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [allRentals, setAllRentals] = useState([]);
+  const { fetchData } = useQuery({
+    url: '/order/getAllRentals',
+    showSnack: false,
+    onSuccess: (res) => setAllRentals(res),
+  });
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'name', headerName: 'User Name', width: 200 },
     { field: 'email', headerName: 'Email', width: 250 },
     { field: 'orderDate', headerName: 'OrderDate', width: 250 },
-    { field: 'isDelivered', headerName: 'Delievered?', width: 150 },
+    { field: 'isActive', headerName: 'isActive', width: 150 },
     {
       field: 'details',
       headerName: 'Details',
@@ -40,42 +47,16 @@ const AdminDashboard = () => {
       },
     },
   ];
-  const rows = [
-    {
-      id: 1,
-      name: 'test',
-      orderDate: '14/08/2022',
-      email: 'test@gmail.com',
-      isDelivered: false,
-    },
-    {
-      id: 1,
-      name: 'test',
-      orderDate: '14/08/2022',
-      email: 'test@gmail.com',
-      isDelivered: false,
-    },
 
-    {
-      id: 1,
-      name: 'test',
-      orderDate: '14/08/2022',
-      email: 'test@gmail.com',
-      isDelivered: false,
-    },
-    {
-      id: 1,
-      name: 'test',
-      orderDate: '14/08/2022',
-      email: 'test@gmail.com',
-      isDelivered: false,
-    },
-  ];
   const { breakpoints } = useTheme();
 
   const toggleAddBookModal = () => {
     setShowAddBookModal(!showAddBookModal);
   };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const rows = allRentals?.data || [];
 
   return (
     <MainPage>
@@ -121,7 +102,7 @@ const AdminDashboard = () => {
                   />
                 </Box>
                 <Typography sx={{ fontSize: '2em', fontWeight: 700 }}>
-                  <CountUp end={28} duration={1} />
+                  <CountUp end={allRentals?.rentLen} duration={1} />
                 </Typography>
                 <Typography sx={{ fontWeight: 600, color: palette.primary }}>
                   Books rented
@@ -150,7 +131,7 @@ const AdminDashboard = () => {
                   />
                 </Box>
                 <Typography sx={{ fontSize: '2em', fontWeight: 700 }}>
-                  <CountUp end={28} duration={1} />
+                  <CountUp end={allRentals?.booksLen} duration={1} />
                 </Typography>
                 <Typography sx={{ fontWeight: 600, color: palette.primary }}>
                   Books available
