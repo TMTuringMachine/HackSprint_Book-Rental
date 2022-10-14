@@ -13,7 +13,7 @@ const BookImage = styled("div")(({ url }) => ({
   backgroundImage: `url('${url}')`,
   backgroundPosition: "center",
   backgroundSize: "cover",
-  borderRadius:'10px'
+  borderRadius: "10px",
 }));
 
 const BookOverview = ({ book }) => {
@@ -22,7 +22,8 @@ const BookOverview = ({ book }) => {
     url: "/order/addToCart",
     showSnack: true,
     onSuccess: (data) => {
-      dispatch(addToCartSuccess(data.cart));
+      // console.log(data)
+      dispatch(addToCartSuccess({ cart: data.cart }));
     },
   });
 

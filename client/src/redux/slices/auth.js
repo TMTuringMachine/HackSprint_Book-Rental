@@ -26,13 +26,23 @@ const slice = createSlice({
       state.user = null;
     },
     addToCartSuccess(state, action) {
-      state.user.cart = action.payload;
+      state.user.cart = action.payload.cart;
+      return state;
+    },
+    removeFromCartSuccess(state, action) {
+      state.user.cart = action.payload.cart;
       return state;
     },
   },
 });
 
-export const { registerSuccess, loginSuccess, initialize, logoutSuccess,addToCartSuccess } =
-  slice.actions;
+export const {
+  registerSuccess,
+  loginSuccess,
+  initialize,
+  logoutSuccess,
+  addToCartSuccess,
+  removeFromCartSuccess,
+} = slice.actions;
 
 export default slice.reducer;
