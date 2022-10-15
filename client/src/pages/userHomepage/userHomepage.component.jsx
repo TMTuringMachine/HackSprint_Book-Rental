@@ -3,7 +3,7 @@ import React,{useState,useEffect} from "react";
 import BookOverview from "../../components/BookOverview/BookOverview.component";
 import CustomButton from "../../components/CustomButton/CustomButton.component";
 import useQuery from "../../hooks/useQuery";
-
+import useMutation from "../../hooks/useMutation";
 const Home = () => {
   const [books, setBooks] = useState([]);
   const { isLoading, response,fetchData } = useQuery({
@@ -14,8 +14,19 @@ const Home = () => {
       console.log(data.books);
     },
   });
+  const [bookOfTheDay,setBook] = useState()
+  const { mutate } = useMutation({
+    url: '/books/getRandomBook',
+    showSnack: false,
+    onSuccess: (res) => {
+      setBook(res.book)
+    },
+  });
+
+
   useEffect(()=>{
     fetchData();
+    mutate()
   },[])
   return (
     <div className="w-full h-full flex flex-col overflow-y-auto">
@@ -71,11 +82,11 @@ const Home = () => {
                   #2nd best rental
                 </div>
                 <div className="text-5xl font-semibold">
-                  The Picture of Dorian Gray!
+                  {bookOfTheDay?.name}
                 </div>
                 <Rating defaultValue={4} size="large" />
                 <div className="text-3xl font-semibold text-primary">
-                  Rs. 90/-
+                  Rs. {bookOfTheDay?.rentPrice}/-
                 </div>
                 <CustomButton>ADD TO CART</CustomButton>
               </div>
