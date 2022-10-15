@@ -15,7 +15,7 @@ const AdminOrderSummary = () => {
       const calculatedTotal = res?.orderDetails.books.map((book) => {
         calulate += Number(book.rentPrice);
       });
-
+      console.log(res.orderDetails);
       setTotal(calulate);
     },
   });
