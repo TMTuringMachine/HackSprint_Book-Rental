@@ -5,7 +5,7 @@ const {
   getAllBooks,
   getSingleBook,
   addSingleBook,
-  getRandomBook
+  getRandomBook,
 } = require('../controllers/BookController');
 
 const multer = require('multer');
@@ -15,5 +15,5 @@ router.get('/getAll', getAllBooks);
 router.get('/getBook/:id', getSingleBook);
 router.post('/addFromCSV', addBooksFromCSV);
 router.post('/addSingleBook', upload.single('image'), addSingleBook);
-router.post('/getRandomBook',getRandomBook)
+router.post('/getRandomBook', getRandomBook);
 module.exports = router;
