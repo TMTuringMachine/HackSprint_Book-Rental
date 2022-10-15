@@ -3,8 +3,9 @@ const { copyFile } = require('fs/promises');
 
 const addBooksFromCSV = async (req, res) => {
   const books = req.body.data;
+  const nb = books.slice(1);
 
-  for (const book of books) {
+  for (const book of nb) {
     const newBook = new Book({
       name: book[0],
       isbn: book[1],
