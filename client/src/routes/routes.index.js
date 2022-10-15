@@ -54,6 +54,10 @@ export default function Router() {
           path: "orderSummary/:id",
           element: <UserOrderSummary />,
         },
+        {
+          path: "dashboard",
+          element: <UserDashboard />,
+        },
       ],
     },
     {
@@ -118,6 +122,10 @@ const UserCheckout = Loadable(
 
 const UserOrderSummary = Loadable(
   lazy(() => import("../pages/userOrderSummary/userOrderSummary.component"))
+);
+
+const UserDashboard = Loadable(
+  lazy(() => import("../pages/userDashboard/userDashboard.component"))
 );
 
 //admin routes

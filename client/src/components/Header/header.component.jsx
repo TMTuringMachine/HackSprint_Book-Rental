@@ -82,18 +82,18 @@ const Header = () => {
           }}
         >
           <S.HeaderMenu>
-            {/* <S.HeaderItem
+            <S.HeaderItem
               onClick={() => {
                 if (user?.isAdmin) {
                   navigate("/admin/profile");
                 } else {
-                  navigate("/employee/profile");
+                  navigate("/user/dashboard");
                 }
               }}
             >
               <Icon icon="bx:user-circle" />
               <Typography>PROFILE</Typography>
-            </S.HeaderItem> */}
+            </S.HeaderItem>
 
             <S.HeaderItem onClick={handleLogout}>
               <Icon icon="ant-design:logout-outlined" />

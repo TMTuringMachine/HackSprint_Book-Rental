@@ -10,6 +10,7 @@ const addBooksFromCSV = async (req, res) => {
       isbn: book[1],
       author: book[2],
       rentPrice: book[3],
+      image:book[4],
       stock: 1,
       numratings: 0,
     });
