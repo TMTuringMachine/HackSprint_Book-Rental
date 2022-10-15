@@ -242,10 +242,12 @@ const getRentals = async (req, res) => {
 const getAllRentals = async (req, res) => {
   try {
     const users = await User.find({}).populate('rentals.order');
+    console.log("SIUUU",users)
     const data = [];
     let rentLen = 0;
     users.map((u) => {
       u.rentals.map((r) => {
+        console.log(r)
         const val = {
           id: r.order._id,
           username: u.name,
@@ -255,14 +257,17 @@ const getAllRentals = async (req, res) => {
         };
         data.push(val);
         if (r.isActive) {
-          rentLen += r.order?.books?.length;
+          if(r.order?.books?.length) rentLen += Number(r.order?.books?.length);
+          // console.log("HERE",r.order?.books?.length)
         }
       });
     });
+
+    console.log(rentLen)
     const books = await Book.find({});
     let booksLen = books.length;
 
-    console.log(data);
+    // console.log(data);
     res
       .status(200)
       .send({ message: 'All rentals recieved', data, booksLen, rentLen });
@@ -330,6 +335,7 @@ const scanQR = async (req, res) => {
       order.isDelivered = true;
     }
     order.isActive = false;
+    res.status(200).send({message:"QR Scanned"})
   } catch (e) {}
 };
 
