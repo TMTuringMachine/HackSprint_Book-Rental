@@ -271,6 +271,16 @@ const orderSummary = async (req, res) => {
   }
 };
 
+const orderSummaryPost = async (req, res) => {
+    const { orderID } = req.body;
+    const orderDetails = await Order.findById(orderID).populate("books");
+    if (orderDetails)
+      res.status(200).send({ message: "Order Summary", orderDetails });
+    else {
+      res.status(400).send({ message: "Error occurred" });
+    }
+  };
+
 module.exports = {
   createOrder,
   payment,
@@ -281,4 +291,5 @@ module.exports = {
   getRentals,
   getAllRentals,
   orderSummary,
+  orderSummaryPost
 };
