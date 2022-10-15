@@ -37,7 +37,11 @@ const orderSchema = new mongoose.Schema({
   isReturned:{
     type:Boolean,
     default:false
-  }
+  },
+  placed_at:{
+    type:Date,
+    default:Date.now()
+  },
 });
 
 const Order = mongoose.model("ORDER", orderSchema);
