@@ -1,9 +1,9 @@
-const { response } = require("express");
-const Razorpay = require("razorpay");
-const crypto = require("crypto");
-const User = require("../models/UserSchema");
-const Order = require("../models/OrderSchema");
-const Book = require("../models/BookSchema");
+const { response } = require('express');
+const Razorpay = require('razorpay');
+const crypto = require('crypto');
+const User = require('../models/UserSchema');
+const Order = require('../models/OrderSchema');
+const Book = require('../models/BookSchema');
 
 const createOrder = async (req, res) => {
   const { amount } = req.body;
@@ -14,8 +14,8 @@ const createOrder = async (req, res) => {
   const resp = instance.orders.create(
     {
       amount: amount,
-      currency: "INR",
-      receipt: "receipt#1",
+      currency: 'INR',
+      receipt: 'receipt#1',
     },
     (err, response) => {
       res.send(response);
@@ -35,8 +35,8 @@ const payment = async (req, res) => {
   // } else {
   // //   return res.status(200).json({ ok: false });
   // }
-  console.log("PAYMENT DONE");
-  res.redirect("/success");
+  console.log('PAYMENT DONE');
+  res.redirect('/success');
 };
 
 const addToCart = async (req, res) => {
@@ -50,15 +50,16 @@ const addToCart = async (req, res) => {
     newCart.total += Number(book.rentPrice);
     const isAdded = await User.findByIdAndUpdate(id, {
       cart: newCart,
-    }).populate("cart.items");
+    }).populate('cart.items');
     await isAdded.save();
     if (isAdded) {
-      res.status(200).send({ message: "Added To Cart", cart: newCart });
+      res.status(200).send({ message: 'Added To Cart', cart: newCart });
     } else {
-      res.status(400).send({ message: "Failed To Add To Cart" });
+      res.status(400).send({ message: 'Failed To Add To Cart' });
     }
   } catch (error) {
-    res.status(400).send({ message: "Something went wrong", error });
+    console.log(error);
+    res.status(400).send({ message: 'Something went wrong', error });
   }
 };
 
@@ -67,8 +68,8 @@ const removeFromCart = async (req, res) => {
   const { bookID } = req.body;
   try {
     const user = await User.findById(id).populate({
-      path: "cart",
-      populate: "items",
+      path: 'cart',
+      populate: 'items',
     });
 
     var reduce = 0;
@@ -94,95 +95,65 @@ const removeFromCart = async (req, res) => {
     });
     if (isAdded) {
       res.status(200).send({
-        message: "Removed From Cart",
+        message: 'Removed From Cart',
         cart: {
           items: updatedCart,
           total,
         },
       });
     } else {
-      res.status(400).send({ message: "Failed To Remove From Cart" });
+      res.status(400).send({ message: 'Failed To Remove From Cart' });
     }
   } catch (error) {
-    res.status(400).send({ message: "Something went wrong" });
+    res.status(400).send({ message: 'Something went wrong' });
   }
 };
 
 const getCart = async (req, res) => {
   const { id } = req.user;
-  const getCart = await User.findById(id).populate("cart");
+  const getCart = await User.findById(id).populate('cart');
   if (getCart.cart) {
-    res.status(200).send({ message: "Cart Fetched", cart: getCart.cart });
+    res.status(200).send({ message: 'Cart Fetched', cart: getCart.cart });
   } else {
-    res.status(400).send({ message: "Failed to fetch Cart" });
+    res.status(400).send({ message: 'Failed to fetch Cart' });
   }
 };
 
 const checkout = async (req, res) => {
-    const user = req.user
-    let address11;
-    if (user) {
-      console.log("okay user is verified");
-      let cart = user.cart.items;
-      console.log(cart,"CART")
-      let books = cart?.map((e) => e);
-      console.log("books here", books);
-      var totalPrice = cart.total;
-      var { address, city, state, pincode } = req.body;
-      // let addressobj=await user.Addresses
-      console.log("ADRESSsf ", user.Addresses);
-      let address1 = user.Addresses.filter(
-        (e) =>
-          e.address == address &&
-          e.city == city &&
-          e.state == state &&
-          e.pincode == pincode
-      );
-      console.log("now", address);
-      if (address1.length !== 0) {
-        console.log("is there");
-        address11 = { address, city, state, pincode };
-      } else {
-        console.log("else here");
-        let prev = user.Addresses;
-        prev.push({ address, city, state, pincode });
-        address11 = { address, city, state, pincode };
-        const userupdate = await User.findByIdAndUpdate(user.id, {
-          Addresses: prev,
-        });
-      }
-      try {
-        console.log(address11);
-
-        const order = new Order({
-          books,
-          totalPrice,
-          Address: address11,
-          isOutForDelivery: false,
-          isDelivered: false,
-          isReturned: false,
-        });
-        const ordersaved = await order.save();
-        if (ordersaved) {
-          let currrentals = user.rentals;
-          currrentals.push({ isActive: true, order: ordersaved })
-          console.log("HERE",user)
-          const usr = await User.findByIdAndUpdate(user.id,{ rentals:currrentals,cart:{
-            items:[],
-            total:0
-          }})
-
-        if(usr) res.status(200).send({ message: "order checked out" ,orderID:ordersaved._id });
-        }
-      } catch (error) {
-        res.status(403).send({ message: "error occured" });
-
-        console.log("Error occured",error);
-      }
+  const user = req.user;
+  let address11;
+  if (user) {
+    console.log('okay user is verified');
+    let cart = user.cart.items;
+    console.log(cart, 'CART');
+    let books = cart?.map((e) => e);
+    console.log('books here', books);
+    var totalPrice = cart.total;
+    var { address, city, state, pincode } = req.body;
+    // let addressobj=await user.Addresses
+    console.log('ADRESSsf ', user.Addresses);
+    let address1 = user.Addresses.filter(
+      (e) =>
+        e.address == address &&
+        e.city == city &&
+        e.state == state &&
+        e.pincode == pincode
+    );
+    console.log('now', address);
+    if (address1.length !== 0) {
+      console.log('is there');
+      address11 = { address, city, state, pincode };
+    } else {
+      console.log('else here');
+      let prev = user.Addresses;
+      prev.push({ address, city, state, pincode });
+      address11 = { address, city, state, pincode };
+      const userupdate = await User.findByIdAndUpdate(user.id, {
+        Addresses: prev,
+      });
     }
     try {
       console.log(address11);
-      console.log(books, "kikiki");
 
       const order = new Order({
         books,
@@ -196,7 +167,7 @@ const checkout = async (req, res) => {
       if (ordersaved) {
         let currrentals = user.rentals;
         currrentals.push({ isActive: true, order: ordersaved });
-        console.log("HERE", user);
+        console.log('HERE', user);
         const usr = await User.findByIdAndUpdate(user.id, {
           rentals: currrentals,
           cart: {
@@ -208,13 +179,48 @@ const checkout = async (req, res) => {
         if (usr)
           res
             .status(200)
-            .send({ message: "order checked out", orderID: ordersaved._id });
+            .send({ message: 'order checked out', orderID: ordersaved._id });
       }
     } catch (error) {
-      res.status(403).send({ message: "error occured" });
+      res.status(403).send({ message: 'error occured' });
 
-      console.log("Error occured", error);
+      console.log('Error occured', error);
     }
+  }
+  try {
+    console.log(address11);
+    console.log(books, 'kikiki');
+
+    const order = new Order({
+      books,
+      totalPrice,
+      Address: address11,
+      isOutForDelivery: false,
+      isDelivered: false,
+      isReturned: false,
+    });
+    const ordersaved = await order.save();
+    if (ordersaved) {
+      let currrentals = user.rentals;
+      currrentals.push({ isActive: true, order: ordersaved });
+      console.log('HERE', user);
+      const usr = await User.findByIdAndUpdate(user.id, {
+        rentals: currrentals,
+        cart: {
+          items: [],
+          total: 0,
+        },
+      });
+
+      if (usr)
+        res
+          .status(200)
+          .send({ message: 'order checked out', orderID: ordersaved._id });
+    }
+  } catch (error) {
+    res.status(403).send({ message: 'error occured' });
+
+    console.log('Error occured', error);
   }
 };
 
@@ -225,14 +231,14 @@ const getRentals = async (req, res) => {
   if (user.rentals.length !== 0) {
     res
       .status(200)
-      .send({ message: "Fetched All Rentals", rentals: user.rentals });
+      .send({ message: 'Fetched All Rentals', rentals: user.rentals });
   } else {
-    res.status(403).send({ message: "Something Went Wrong" });
+    res.status(403).send({ message: 'Something Went Wrong' });
   }
 };
 const getAllRentals = async (req, res) => {
   try {
-    const users = await User.find({}).populate("rentals.order");
+    const users = await User.find({}).populate('rentals.order');
     const data = [];
     let rentLen = 0;
     users.map((u) => {
@@ -256,22 +262,51 @@ const getAllRentals = async (req, res) => {
     console.log(data);
     res
       .status(200)
-      .send({ message: "All rentals recieved", data, booksLen, rentLen });
+      .send({ message: 'All rentals recieved', data, booksLen, rentLen });
   } catch (e) {
     console.log(e);
-    res.status(500).send({ message: "some error occurred" });
+    res.status(500).send({ message: 'some error occurred' });
   }
 };
 const orderSummary = async (req, res) => {
   const { orderID } = req.params;
-  const orderDetails = await Order.findById(orderID).populate("books");
+  const orderDetails = await Order.findById(orderID).populate('books');
   if (orderDetails)
-    res.status(200).send({ message: "Order Summary", orderDetails });
+    res.status(200).send({ message: 'Order Summary', orderDetails });
   else {
-    res.status(400).send({ message: "Error occurred" });
+    res.status(400).send({ message: 'Error occurred' });
   }
 };
+const deliveryData = async (req, res) => {
+  try {
+    const users = await User.find({}).populate('rentals.order');
+    const ordersDelivered = [];
+    const ordersYetToBeDelivered = [];
+    users.map((u) => {
+      u.rentals.map((r) => {
+        const val = {
+          id: r.order._id,
+          username: u.name,
+          email: u.email,
+          date: r.order.date || new Date(),
+        };
+        if (r.order.isDelivered) {
+          val.isDelivered = true;
+          ordersDelivered.push(val);
+        } else {
+          val.isDelivered = false;
 
+          ordersYetToBeDelivered.push(val);
+        }
+      });
+    });
+
+    res.status(200).send({ ordersDelivered, ordersYetToBeDelivered });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ message: 'some error occurred', error });
+  }
+};
 module.exports = {
   createOrder,
   payment,
@@ -282,4 +317,5 @@ module.exports = {
   getRentals,
   getAllRentals,
   orderSummary,
+  deliveryData,
 };
