@@ -24,19 +24,9 @@ const createOrder = async (req, res) => {
 };
 
 const payment = async (req, res) => {
-  // const webhookSecret = process.env.WEBHOOK_SECRET || "";
-  // const shasum = crypto.createHmac("sha256", webhookSecret);
-  // shasum.update(JSON.stringify(req.body));
-  // const digest = shasum.digest("hex");
-  // let razorSignature = req.headers["x-razorpay-signature"];
-  // if (razorSignature && digest === razorSignature) {
-  //     console.log(req.body)
-  // //   return res.status(200).json({ ok: true, data: req.body });
-  // } else {
-  // //   return res.status(200).json({ ok: false });
-  // }
+  
   console.log("PAYMENT DONE");
-  res.redirect("/success");
+  res.redirect("http://localhost:3000/user/home");
 };
 
 const addToCart = async (req, res) => {
