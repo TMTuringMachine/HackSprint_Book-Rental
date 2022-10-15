@@ -320,6 +320,19 @@ const orderSummaryPost = async (req, res) => {
   }
 };
 
+const scanQR = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const order = await Order.findById(id);
+    if (order.isDelivered) {
+      order.isReturned = true;
+    } else {
+      order.isDelivered = true;
+    }
+    order.isActive = false;
+  } catch (e) {}
+};
+
 module.exports = {
   createOrder,
   payment,
@@ -332,4 +345,5 @@ module.exports = {
   orderSummary,
   deliveryData,
   orderSummaryPost,
+  scanQR,
 };

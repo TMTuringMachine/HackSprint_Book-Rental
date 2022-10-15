@@ -11,6 +11,8 @@ const {
   orderSummary,
   getAllRentals,
   orderSummaryPost,
+  deliveryData,
+  scanQR,
 } = require('../controllers/OrderController');
 
 const { isLoggedIn } = require('../middlewares/isLoggedIn');
@@ -26,5 +28,6 @@ router.get('/orderSummary/:orderID', orderSummary);
 router.post('/orderSummary', isLoggedIn, orderSummaryPost);
 router.get('/getAllRentals', isLoggedIn, getAllRentals);
 router.get('/deliveryData', isLoggedIn, deliveryData);
+router.get('/scanQr/:id', isLoggedIn, scanQR);
 
 module.exports = router;
