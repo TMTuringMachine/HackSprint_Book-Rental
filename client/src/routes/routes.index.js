@@ -58,16 +58,16 @@ export default function Router() {
     },
     {
       path: "/admin",
-      element: <MainLayout />,
+      element: <AdminLayout />,
       children: [
         {
           path: "dashboard",
           element: <AdminDashboard />,
         },
         {
-          path:"orderSummary/:id",
-          element:<AdminOrderSummary/>
-        }
+          path: "orderSummary/:id",
+          element: <AdminOrderSummary />,
+        },
       ],
     },
     {
@@ -94,6 +94,10 @@ export default function Router() {
 //layouts
 const MainLayout = Loadable(
   lazy(() => import("../layouts/mainLayout/mainLayout.component"))
+);
+
+const AdminLayout = Loadable(
+  lazy(() => import("../layouts/adminLayout/adminLayout.component"))
 );
 
 const Landing = Loadable(

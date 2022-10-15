@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import Header from "../../components/Header/header.component";
 
-const MainLayout = () => {
+const AdminLayout = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { user, isLoggedIn } = useSelector((state) => state.auth);
@@ -26,10 +26,11 @@ const MainLayout = () => {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    if (!user || user.isAdmin) {
+    if (!user || !user.isAdmin) {
       navigate("/");
     }
   }, [user]);
+  
   return (
     <div className="w-screen h-screen flex flex-col">
       <Header />
@@ -40,4 +41,4 @@ const MainLayout = () => {
   );
 };
 
-export default MainLayout;
+export default AdminLayout;

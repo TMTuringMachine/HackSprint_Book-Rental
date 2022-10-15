@@ -13,6 +13,7 @@ const {
   orderSummaryPost,
   deliveryData,
   scanQR,
+  deliveryData,
 } = require('../controllers/OrderController');
 
 const { isLoggedIn } = require('../middlewares/isLoggedIn');

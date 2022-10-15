@@ -1,27 +1,27 @@
-import CustomTextfield from '../../components/CustomTextfield/CustomTextfield.component';
-import CustomButton from '../../components/CustomButton/CustomButton.component';
-import { Fade } from 'react-reveal';
-import { useState, useRef } from 'react';
-import useMutation from '../../hooks/useMutation';
-import { useNavigate } from 'react-router-dom';
-import ReCAPTCHA from 'react-google-recaptcha';
-import axiosInstance from '../../utils/axiosInstance';
-import { useSnackbar } from 'notistack';
+import CustomTextfield from "../../components/CustomTextfield/CustomTextfield.component";
+import CustomButton from "../../components/CustomButton/CustomButton.component";
+import { Fade } from "react-reveal";
+import { useState, useRef } from "react";
+import useMutation from "../../hooks/useMutation";
+import { useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
+import axiosInstance from "../../utils/axiosInstance";
+import { useSnackbar } from "notistack";
 const SignupPage = ({ setCurrentState }) => {
   const navigate = useNavigate();
   const { mutate, isLoading } = useMutation({
-    url: '/signup',
+    url: "/signup",
     showSnack: true,
-    onSuccess: (res) => setCurrentState('login'),
+    onSuccess: (res) => setCurrentState("login"),
     onError: (err) => console.log(err),
   });
   const { enqueueSnackbar } = useSnackbar();
   const [data, setData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    password: '',
-    cpassword: '',
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    cpassword: "",
   });
 
   const handleChange = (e) => {
@@ -33,12 +33,16 @@ const SignupPage = ({ setCurrentState }) => {
   const recaptchaRef = useRef();
 
   const verifyCapFun = async (token) => {
-    const res = await axiosInstance.post('/recaptchaVerify', { token });
+    const res = await axiosInstance.post("/recaptchaVerify", { token });
     return res;
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(data);
+    if (String(data.phone).length != 10) {
+      enqueueSnackbar("Phone no not valid!", { variant: "error" });
+      return;
+    }
     const token = recaptchaRef.current.getValue();
     console.log(token);
     const res = await verifyCapFun(token);
@@ -46,8 +50,8 @@ const SignupPage = ({ setCurrentState }) => {
     if (res.data.data.success) {
       mutate(data);
     } else {
-      enqueueSnackbar('Something went wrong', {
-        variant: 'error',
+      enqueueSnackbar("Something went wrong", {
+        variant: "error",
       });
     }
   };
@@ -73,6 +77,7 @@ const SignupPage = ({ setCurrentState }) => {
             onChange={handleChange}
             name="email"
             value={data.email}
+            type="email"
             required
           />
           <CustomTextfield
@@ -81,6 +86,7 @@ const SignupPage = ({ setCurrentState }) => {
             onChange={handleChange}
             name="phone"
             value={data.phone}
+            type="tel"
             required
           />
           <CustomTextfield
@@ -105,16 +111,16 @@ const SignupPage = ({ setCurrentState }) => {
             ref={recaptchaRef}
             sitekey="6LdAN4AiAAAAAHXcHg3bVrNjdZdwnSLJGeIxKXEV"
           />
-          <CustomButton type="submit" style={{ marginTop: '30px' }}>
+          <CustomButton type="submit" style={{ marginTop: "30px" }}>
             SIGNUP
           </CustomButton>
         </form>
         <div className="mt-3">
-          Already a member?{' '}
+          Already a member?{" "}
           <button
             className="text-primary font-semibold cursor-pointer"
             onClick={() => {
-              setCurrentState('login');
+              setCurrentState("login");
             }}
           >
             Log in
