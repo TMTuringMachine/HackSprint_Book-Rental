@@ -63,6 +63,7 @@ const LoginPage = ({ setCurrentState }) => {
             label="Password"
             fullWidth
             required
+            type="password"
             name="password"
             onChange={handleChange}
             value={data.password}

@@ -10,7 +10,7 @@ const {
   getRentals,
   orderSummary,
   getAllRentals,
-  deliveryData,
+  orderSummaryPost,
 } = require('../controllers/OrderController');
 
 const { isLoggedIn } = require('../middlewares/isLoggedIn');
@@ -23,6 +23,7 @@ router.get('/viewCart', isLoggedIn, getCart);
 router.post('/checkout', isLoggedIn, checkout);
 router.get('/getRentals', isLoggedIn, getRentals);
 router.get('/orderSummary/:orderID', orderSummary);
+router.post('/orderSummary', isLoggedIn, orderSummaryPost);
 router.get('/getAllRentals', isLoggedIn, getAllRentals);
 router.get('/deliveryData', isLoggedIn, deliveryData);
 

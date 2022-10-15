@@ -5,7 +5,8 @@ import CustomButton from "../../components/CustomButton/CustomButton.component";
 import CustomTextfield from "../../components/CustomTextfield/CustomTextfield.component";
 import { useParams } from "react-router-dom";
 import useQuery from "../../hooks/useQuery";
-
+import useMutation from "../../hooks/useMutation";
+import axios from "axios";
 const UserOrderSummary = () => {
   const [orderSummary, setOrderSummary] = useState(null);
   const [totalSum, setTotalSum] = useState(0);
@@ -23,6 +24,42 @@ const UserOrderSummary = () => {
       );
     },
   });
+
+  const handlePayment = async(amount)=>{
+    amount*=100;
+    const response = await axios.post('/order/create',{
+      amount
+    })
+
+    console.log(response)
+
+    const finalAmt = response.data.amount*100
+
+    var options = {
+      "key": "rzp_test_k5SweSI6pKHvxm", // Enter the Key ID generated from the Dashboard
+      "amount": finalAmt, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      "currency": "INR",
+      "name": "Turing Machine",
+      "description": "Test Transaction",
+      "image": "https://example.com/your_logo",
+      "order_id": response.data.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      "callback_url": "http://localhost:5001/order/pay",
+      "prefill": {
+          "name": "Vedant Gokhale",
+          "email": "gaurav.kumar@example.com",
+          "contact": "9999999999"
+      },
+      "notes": {
+          "address": "Razorpay Corporate Office"
+      },
+      "theme": {
+          "color": "#3399cc"
+      }
+  };
+  var rzp1 = new window.Razorpay(options);
+  rzp1.open();
+
+  }
 
   useEffect(() => {
     if (id) {
@@ -80,7 +117,7 @@ const UserOrderSummary = () => {
               <span>Rs {totalSum}/-</span>
             </div>
           </div>
-          <CustomButton>PAY FOR ORDER</CustomButton>
+          <CustomButton onClick={()=>handlePayment(totalSum)} >PAY FOR ORDER</CustomButton>
         </div>
       </div>
     </div>

@@ -35,8 +35,11 @@ const payment = async (req, res) => {
   // } else {
   // //   return res.status(200).json({ ok: false });
   // }
+  // console.log('PAYMENT DONE');
+  // res.redirect('/success');
+
   console.log('PAYMENT DONE');
-  res.redirect('/success');
+  res.redirect('http://localhost:3000/user/home');
 };
 
 const addToCart = async (req, res) => {
@@ -307,6 +310,16 @@ const deliveryData = async (req, res) => {
     res.status(500).send({ message: 'some error occurred', error });
   }
 };
+const orderSummaryPost = async (req, res) => {
+  const { orderID } = req.body;
+  const orderDetails = await Order.findById(orderID).populate('books');
+  if (orderDetails)
+    res.status(200).send({ message: 'Order Summary', orderDetails });
+  else {
+    res.status(400).send({ message: 'Error occurred' });
+  }
+};
+
 module.exports = {
   createOrder,
   payment,
@@ -318,4 +331,5 @@ module.exports = {
   getAllRentals,
   orderSummary,
   deliveryData,
+  orderSummaryPost,
 };
