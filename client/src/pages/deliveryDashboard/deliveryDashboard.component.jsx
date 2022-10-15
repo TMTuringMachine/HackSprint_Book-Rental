@@ -13,9 +13,32 @@ import palette from '../../theme/palette';
 import { DataGrid } from '@mui/x-data-grid';
 import useQuery from '../../hooks/useQuery';
 import * as S from '../adminDashboard/adminDashboard.styles';
-import { useEffect, useState } from 'react';
+import React,{ useEffect, useState } from 'react';
+import Modal from '@mui/material/Modal';
+import { QrReader } from 'react-qr-reader';
+import { borderRadius } from '@mui/system';
+import axios from 'axios';
+import axiosInstance from '../../utils/axiosInstance';
+import {useSnackbar} from 'notistack'
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 const DeliveryDashboard = () => {
   const [pageData, setPageData] = useState();
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const { enqueueSnackbar } = useSnackbar()
 
   const { fetchData } = useQuery({
     url: '/order/deliveryData',
@@ -67,9 +90,40 @@ const DeliveryDashboard = () => {
           width: '100%',
         }}
       >
+
+<Modal
+  open={open}
+  onClose={handleClose}
+  aria-labelledby="modal-modal-title"
+  aria-describedby="modal-modal-description"
+>
+  <div style={{
+    margin: 'auto',
+    width: '400px',
+  }}>
+
+  <QrReader
+  scanDelay={500}
+  videoId={"video"}
+  onResult={async(result, error) => {
+    if (!!result) {
+      console.log(result?.text)
+      const response = await axiosInstance.get(`/order/scanQr/${result?.text}`)
+      console.log(response)
+      enqueueSnackbar(response.data.message,{variant:"success"})
+      handleClose()
+    }
+   
+  }}
+  style={{ width: '100%' }}
+  />
+  </div>
+</Modal>
+
         <Box></Box>
-        <CustomButton>
+        <CustomButton onClick={handleOpen} >
           Scan QR Code
+
           <Box sx={{ marginLeft: '0.8rem' }}>
             <Icon icon="bi:qr-code-scan" width="28" height="28" />
           </Box>
