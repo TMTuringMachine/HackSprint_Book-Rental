@@ -19,12 +19,12 @@ const LoginPage = ({ setCurrentState }) => {
       setSession(res.token);
       console.log(res);
       dispatch(loginSuccess({ user: res.userLogin }));
-      if (res.isAdmin) {
+      if (res.userLogin.isAdmin) {
         navigate('/admin/dashboard');
-      } else if (res.isDeliveryBoy) {
-        navigate('/admin/dashboard');
+      } else if (res.userLogin.isDeliveryBoy) {
+        navigate('/delivery/dashboard');
       } else {
-        navigate('/admin/dashboard');
+        navigate('/user/home');
       }
     },
   });

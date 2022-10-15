@@ -40,7 +40,7 @@ const Header = () => {
   const { user } = useSelector((state) => state.auth);
   return (
     <div className="w-full h-14 bg-primary flex items-center px-8 justify-between">
-      <Link to="/user/home">
+      <Link to={user.isAdmin ? "/admin/dashboard" : "/user/home"}>
         <div className="logo text-xl font-semibold">BookMyBook</div>
       </Link>
       <div className="flex gap-8">
@@ -65,7 +65,7 @@ const Header = () => {
           height="30px"
           color="white"
           onClick={handleClick}
-          style={{cursor:"pointer"}}
+          style={{ cursor: "pointer" }}
         />
         <Popover
           id={id}

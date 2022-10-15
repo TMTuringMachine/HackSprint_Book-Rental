@@ -4,10 +4,13 @@ import LandingPageLottie from "../../assets/landing.json";
 import IntroPage from "./IntroPage";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
-
+import { useSelector } from "react-redux";
+import {useNavigate} from 'react-router-dom';
 
 const Landing = () => {
   const [currentState, setCurrentState] = useState("signup");
+  const { isLoggedIn, user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   const defaultOptions = {
     loop: true,
@@ -27,6 +30,18 @@ const Landing = () => {
   } else {
     page = <IntroPage setCurrentState={setCurrentState} />;
   }
+
+  useEffect(()=>{
+    if(isLoggedIn){
+      if(user.isAdmin){
+        navigate("/admin/dashboard");
+      }else if(user.isDeliveryBoy){
+        navigate("/delivery/dashboard");
+      }else{
+        navigate("/user/home")
+      }
+    }
+  },[isLoggedIn])
 
   return (
     <div className="w-screen h-screen bg-background flex box-border">

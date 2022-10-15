@@ -11,6 +11,7 @@ const {
   orderSummary,
   getAllRentals,
   orderSummaryPost,
+  deliveryData
 } = require('../controllers/OrderController');
 
 const { isLoggedIn } = require('../middlewares/isLoggedIn');
